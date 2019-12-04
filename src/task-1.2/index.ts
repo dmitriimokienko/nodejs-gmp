@@ -1,22 +1,24 @@
 import fs from 'fs';
 import csv from 'csvtojson';
 import {pipeline} from 'stream'
+import {csvParams} from './config';
+import {
+    HEADERS_LINE_INDEX,
+    SUCCESS_OUTPUT,
+    CSV_FILE_PATH,
+    JSON_FILE_PATH
+} from './constants';
 
-const CSV_FILE_PATH = './csv/input_example.csv';
-const JSON_FILE_PATH = './csv/output.txt';
-
-try {
-    const readStream = fs.createReadStream(CSV_FILE_PATH);
-    const writeStream = fs.createWriteStream(JSON_FILE_PATH);
-
-    pipeline(
-        readStream,
-        csv(),
-        writeStream,
-        error => {
-            error && console.error(error);
-        }
-    )
-} catch (error) {
-    console.error(error);
-}
+pipeline(
+    fs.createReadStream(CSV_FILE_PATH),
+    csv(csvParams)
+        .preFileLine(
+            (fileLine: string, lineIndex: number): string =>
+                lineIndex === HEADERS_LINE_INDEX ? fileLine.toLowerCase() : fileLine
+        ),
+    fs.createWriteStream(JSON_FILE_PATH),
+    error => {
+        const output = error || SUCCESS_OUTPUT;
+        console.log(output);
+    }
+);

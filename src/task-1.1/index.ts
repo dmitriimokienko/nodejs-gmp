@@ -1,15 +1,5 @@
 import process from 'process';
-
-function reverseText(text: string): string {
-    return text
-        .split('')
-        .reverse()
-        .join('');
-}
-
-function writeLine(text: string): string {
-    return `${text}\n\n`;
-}
+import {reverseText, writeLine} from './utils';
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('readable', () => {
