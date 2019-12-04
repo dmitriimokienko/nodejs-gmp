@@ -1,0 +1,31 @@
+{
+  "name": "nodejs_gmp",
+  "version": "1.0.0",
+  "description": "NodeJS GMP 2019Q4",
+  "main": "src/index.ts",
+  "scripts": {
+    "task1": "nodemon src/task-1.1/index.ts",
+    "task2": "nodemon src/task-1.2/index.ts",
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmitriimokienko/nodejs-gmp.git"
+  },
+  "author": "Dmitrii Mokienko",
+  "license": "ISC",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "typescript": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/csvtojson": "^1.1.5",
+    "@types/node": "^12.12.14",
+    "nodemon": "^2.0.1",
+    "ts-node": "^8.5.4"
+  }
+}
