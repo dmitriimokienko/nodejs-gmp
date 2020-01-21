@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import {get} from 'lodash';
-import {IUserService} from '../service/service';
+import {IUserService} from '../interfaces';
 
 export class UserController {
     private readonly service: IUserService;
@@ -13,7 +13,7 @@ export class UserController {
         try {
             const loginSubstring = get(req, 'query.login');
             const limit = get(req, 'query.limit');
-            const users = await this.service.getAll(loginSubstring, limit);
+            const users = await this.service.select(loginSubstring, limit);
             res.json(users);
         } catch (e) {
             res.status(400).send(e.message);

@@ -1,14 +1,14 @@
-import express from 'express';
+import express, {Router} from 'express';
 import {url} from '../url';
 import {UserController} from './controller';
 import {UserService} from '../service';
-import {validateSchema} from '../../../utils';
+import {validateSchema} from '../../../middlewares';
 import {userValidation} from '../validation';
-// @ts-ignore
-import users from '../../../../data/users.json';
+import {UserModel} from '../model';
 
-export const router: express.Router = express.Router();
-const controller = new UserController(new UserService(users));
+export const router: Router = express.Router();
+
+const controller = new UserController(new UserService(UserModel));
 
 router.route(url.users)
     .get(controller.get)

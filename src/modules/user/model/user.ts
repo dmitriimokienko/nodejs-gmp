@@ -52,12 +52,12 @@ const attributes = {
 
 const options = {sequelize, modelName: 'user'};
 
-export class User extends Model {
+export class UserModel extends Model {
     public readonly id?: string;
     public login!: string;
-    public password?: string;
+    public password!: string;
     public age?: number | null;
     public isDeleted?: boolean;
 }
 
-User.init(attributes, options);
+UserModel.init(attributes, options);

@@ -20,10 +20,3 @@ export const sequelize = new Sequelize(
         define: {timestamps: false}
     }
 );
-
-export function dbConnect() {
-    sequelize
-        .sync()
-        .then(result => console.log(result))
-        .catch(err => console.error(err));
-}
