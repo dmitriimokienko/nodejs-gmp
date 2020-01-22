@@ -1,3 +1,6 @@
+import {Model} from 'sequelize';
+import {UserModel} from './model';
+
 export type UserType = {
     id: string,
     login: string,
@@ -11,3 +14,5 @@ export type BodyType = {
     password: string,
     age: number
 }
+
+export type UserModelType = typeof Model & UserModel;

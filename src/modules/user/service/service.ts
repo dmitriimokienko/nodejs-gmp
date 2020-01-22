@@ -1,12 +1,12 @@
 import {pickBy} from 'lodash';
 import {IUserService} from '../interfaces';
-import {BodyType, UserType} from '../types';
+import {BodyType, UserModelType, UserType} from '../types';
 import {handleDaoError, prepareLimit, prepareLogin} from '../../../utils';
 
 export class UserService implements IUserService {
-    private readonly userModel: any;
+    private readonly userModel: UserModelType;
 
-    constructor(userModel: any) {
+    constructor(userModel: UserModelType) {
         this.userModel = userModel;
     }
 

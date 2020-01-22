@@ -1,1 +1,1 @@
-export {router as userRouter} from './controller';
+export {userRouter} from './controller';
