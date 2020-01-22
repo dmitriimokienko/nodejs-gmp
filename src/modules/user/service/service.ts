@@ -10,45 +10,30 @@ export class UserService implements IUserService {
         this.userModel = userModel;
     }
 
-    // remove error handlers, validate by model
-    public select = async (loginSubstring?: string, limit?: number): Promise<Array<UserType>> => {
+    public select = async (loginSubstring?: string, limit?: number | string): Promise<Array<UserType>> => {
         const isDeleted = false;
         const login = loginSubstring ? {[Op.like]: `%${loginSubstring}%`} : undefined;
-        const options = pickBy({isDeleted, login, limit});
 
-        console.log(options); // remove !!!
+        // limit does't work
+        const where = pickBy({isDeleted, login, limit});
 
-        return await this.userModel.findAll({where: options, raw: true});
+        return await this.userModel.findAll({where, raw: true});
     };
 
     public getById = async (id: string): Promise<UserType> => {
-        const user = await this.userModel.findByPk(id);
-        if (!user) {
-            throw new Error('User not found');
-        }
-        return user;
+        return await this.userModel.findByPk(id);
     };
 
     public create = async ({login, password, age}: BodyType): Promise<UserType> => {
-        // if (!login || !password) {
-        //     throw new Error('Missing required parameters');
-        // }
         return await this.userModel.create({login, password, age});
     };
 
+    // wait login and pass -> change validation
     public update = async (id: string, body: BodyType): Promise<UserType> => {
-        const user = await this.userModel.update(pickBy(body), {where: {id}});
-        if (!user) {
-            throw new Error('User not found');
-        }
-        return user;
+        return await this.userModel.update(pickBy(body), {where: {id}});
     };
 
     public delete = async (id: string): Promise<UserType> => {
-        const user = await this.userModel.update({isDelete: true}, {where: {id}});
-        if (!user) {
-            throw new Error('User not found');
-        }
-        return user;
+        return await this.userModel.update({isDelete: true}, {where: {id}});
     };
 }
