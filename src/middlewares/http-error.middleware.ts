@@ -1,9 +1,8 @@
-import {Request, Response} from 'express';
-import {HttpException} from "../components";
+import {Request, Response, NextFunction} from 'express';
+import {HttpException} from '../components';
 
-export const httpError = () => (err: HttpException, _: Request, res: Response) => {
+export const httpError = () => (err: HttpException, _req: Request, res: Response, next: NextFunction) => {
     const {status = 500, message} = err;
-
-    console.error(message);
     res.status(status).json({status, message});
+    next(err);
 };

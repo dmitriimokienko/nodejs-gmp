@@ -1,13 +1,13 @@
-import {UserType} from './types';
+import {UserModel} from './model';
 
 export interface IUserService {
-    select(loginSubstring: string, count?: string): Promise<Array<UserType>>
+    select(loginSubstring: string, count?: string): Promise<UserModel[]>
 
-    getById(id: string): Promise<UserType>,
+    getById(id: string): Promise<UserModel>,
 
-    create(body: any): Promise<UserType>,
+    create(body: any): Promise<UserModel>,
 
-    update(id: string, body: any): Promise<UserType>,
+    update(id: string, body: any): Promise<UserModel>,
 
-    delete(id: string): Promise<UserType>
+    delete(id: string): Promise<UserModel>
 }

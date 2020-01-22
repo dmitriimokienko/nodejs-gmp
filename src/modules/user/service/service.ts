@@ -1,6 +1,7 @@
 import {pickBy} from 'lodash';
 import {IUserService} from '../interfaces';
-import {BodyType, UserModelType, UserType} from '../types';
+import {BodyType, UserModelType} from '../types';
+import {UserModel} from '../model';
 import {handleDaoError, prepareLimit, prepareLogin} from '../../../utils';
 
 export class UserService implements IUserService {
@@ -11,7 +12,7 @@ export class UserService implements IUserService {
     }
 
     // add data-layer
-    public select = async (loginSubstring?: string, count?: string): Promise<Array<UserType>> => {
+    public select = (loginSubstring?: string, count?: string): Promise<UserModel[]> => {
         const login = prepareLogin(loginSubstring);
         const limit = prepareLimit(count);
 
@@ -21,23 +22,23 @@ export class UserService implements IUserService {
         return this.userModel.findAll(options);
     };
 
-    public getById = async (id: string): Promise<UserType> => {
+    public getById = (id: string): Promise<UserModel> => {
         return this.userModel.findByPk(id)
             .then(handleDaoError('User not found'));
     };
 
-    public create = async ({login, password, age}: BodyType): Promise<UserType> => {
+    public create = ({login, password, age}: BodyType): Promise<UserModel> => {
         return this.userModel.create({login, password, age})
             .then(handleDaoError('Missing required parameters'));
     };
 
     // wait login and pass -> change validation
-    public update = async (id: string, body: BodyType): Promise<UserType> => {
+    public update = (id: string, body: BodyType): Promise<UserModel> => {
         return this.userModel.update(pickBy(body), {where: {id}})
             .then(handleDaoError('User not found'));
     };
 
-    public delete = async (id: string): Promise<UserType> => {
+    public delete = (id: string): Promise<UserModel> => {
         return this.userModel.update({isDelete: true}, {where: {id}})
             .then(handleDaoError('User not found'));
     };
