@@ -16,7 +16,7 @@ export class UserController {
             const users = await this.service.select(loginSubstring, limit);
             res.json(users);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(404).send(e.message);
             next(e);
         }
     };
@@ -27,7 +27,7 @@ export class UserController {
             const user = await this.service.getById(id);
             res.json(user);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(404).send(e.message);
             next(e);
         }
     };
@@ -38,7 +38,7 @@ export class UserController {
             const user = await this.service.create(body);
             res.json(user);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(404).send(e.message);
             next(e);
         }
     };
@@ -50,7 +50,7 @@ export class UserController {
             const user = await this.service.update(id, body);
             res.json(user);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(404).send(e.message);
             next(e);
         }
     };
@@ -61,7 +61,7 @@ export class UserController {
             const user = await this.service.delete(id);
             res.json(user);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(404).send(e.message);
             next(e);
         }
     };

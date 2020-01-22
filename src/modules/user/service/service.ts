@@ -1,7 +1,7 @@
-import {Op} from 'sequelize';
 import {pickBy} from 'lodash';
 import {IUserService} from '../interfaces';
 import {BodyType, UserType} from '../types';
+import {handleDaoError, prepareLimit, prepareLogin} from '../../../utils';
 
 export class UserService implements IUserService {
     private readonly userModel: any;
@@ -10,30 +10,35 @@ export class UserService implements IUserService {
         this.userModel = userModel;
     }
 
-    public select = async (loginSubstring?: string, limit?: number | string): Promise<Array<UserType>> => {
-        const isDeleted = false;
-        const login = loginSubstring ? {[Op.like]: `%${loginSubstring}%`} : undefined;
+    // add data-layer
+    public select = async (loginSubstring?: string, count?: string): Promise<Array<UserType>> => {
+        const login = prepareLogin(loginSubstring);
+        const limit = prepareLimit(count);
 
-        // limit does't work
-        const where = pickBy({isDeleted, login, limit});
+        const where = pickBy({isDeleted: false, login});
+        const options = pickBy({where, limit, raw: true});
 
-        return await this.userModel.findAll({where, raw: true});
+        return this.userModel.findAll(options);
     };
 
     public getById = async (id: string): Promise<UserType> => {
-        return await this.userModel.findByPk(id);
+        return this.userModel.findByPk(id)
+            .then(handleDaoError('User not found'));
     };
 
     public create = async ({login, password, age}: BodyType): Promise<UserType> => {
-        return await this.userModel.create({login, password, age});
+        return this.userModel.create({login, password, age})
+            .then(handleDaoError('Missing required parameters'));
     };
 
     // wait login and pass -> change validation
     public update = async (id: string, body: BodyType): Promise<UserType> => {
-        return await this.userModel.update(pickBy(body), {where: {id}});
+        return this.userModel.update(pickBy(body), {where: {id}})
+            .then(handleDaoError('User not found'));
     };
 
     public delete = async (id: string): Promise<UserType> => {
-        return await this.userModel.update({isDelete: true}, {where: {id}});
+        return this.userModel.update({isDelete: true}, {where: {id}})
+            .then(handleDaoError('User not found'));
     };
 }
