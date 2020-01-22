@@ -1,28 +1,6 @@
 import {Model, DataTypes} from 'sequelize';
 import {sequelize} from '../../../../resources';
 
-// export const User = sequelize.define('user', {
-//     id: {
-//         type: DataTypes.UUID,
-//         defaultValue: DataTypes.UUIDV4,
-//         // autoIncrement: true,
-//         primaryKey: true,
-//         allowNull: false
-//     },
-//     login: {
-//         type: DataTypes.STRING(50),
-//         allowNull: false
-//     },
-//     password: {
-//         type: DataTypes.STRING(130),
-//         allowNull: false
-//     },
-//     age: {
-//         type: DataTypes.INTEGER,
-//         allowNull: true
-//     }
-// });
-
 const attributes = {
     id: {
         type: DataTypes.UUID,

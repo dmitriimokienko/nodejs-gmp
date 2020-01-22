@@ -5,7 +5,6 @@ import {userRouter} from './modules/user';
 import {sequelize} from '../resources';
 import {httpError} from './middlewares';
 
-// todo: to class
 export const app: Application = express();
 
 app.use(cors());
