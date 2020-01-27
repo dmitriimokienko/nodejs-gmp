@@ -17,7 +17,7 @@ export class UserServiceImpl implements UserService {
         const login = prepareLogin(loginSubstring);
         const limit = prepareLimit(count);
 
-        const where = pickBy({ isDeleted: false, login });
+        const where = login ? { isDeleted: false, login } : { isDeleted: false };
         const options = pickBy({ where, limit, raw: true });
 
         return this.userModel.findAll(options);
@@ -52,6 +52,13 @@ export class UserServiceImpl implements UserService {
     };
 
     public delete = (id: string): Promise<UserModel> => {
-        return this.userModel.update({ isDelete: true }, { where: { id } }).then(handleDaoError('User not found'));
+        return this.userModel
+            .findOne({ where: { id, isDeleted: false } })
+            .then(handleDaoError('User not found'))
+            .then((instance: UserModel) => {
+                instance.isDeleted = true;
+                instance.save();
+                return instance;
+            });
     };
 }
