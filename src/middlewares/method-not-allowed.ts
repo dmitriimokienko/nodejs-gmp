@@ -1,4 +1,4 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import Boom from '@hapi/boom';
 
 export const methodNotAllowed = (_req: Request, res: Response) => {

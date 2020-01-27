@@ -1,40 +1,31 @@
 import Joi from '@hapi/joi';
 
 export const userValidation = Joi.object({
-    id: Joi
-        .string()
-        .guid({version: 'uuidv4'}),
+    id: Joi.string().guid({ version: 'uuidv4' }),
 
-    login: Joi
-        .string()
+    login: Joi.string()
         .alphanum()
         .min(3)
         .max(50)
         .required(),
 
-    password: Joi
-        .string()
+    password: Joi.string()
         .pattern(new RegExp(/(?=.*[A-Za-z])(?=.*\d)[0-9A-Za-z]{6,}/))
         .required(),
 
-    age: Joi
-        .number()
+    age: Joi.number()
         .integer()
         .min(4)
         .max(130),
 
-    isDeleted: Joi
-        .boolean()
+    isDeleted: Joi.boolean()
 });
 
 export const userUpdateValidation = Joi.object({
-    password: Joi
-        .string()
-        .pattern(new RegExp(/(?=.*[A-Za-z])(?=.*\d)[0-9A-Za-z]{6,}/)),
+    password: Joi.string().pattern(new RegExp(/(?=.*[A-Za-z])(?=.*\d)[0-9A-Za-z]{6,}/)),
 
-    age: Joi
-        .number()
+    age: Joi.number()
         .integer()
         .min(4)
-        .max(130),
+        .max(130)
 });

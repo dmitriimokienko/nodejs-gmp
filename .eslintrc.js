@@ -1,51 +1,18 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "node": true,
-        "jasmine": true,
-        "es6": true,
-        "jest": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended"
+    parser: '@typescript-eslint/parser',  // Specifies the ESLint parser
+    extends: [
+        'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+        'prettier/@typescript-eslint',  // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+        'plugin:prettier/recommended',  // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly",
-        "$": true,
-        "ga": true,
-        "__ENV__": true,
-        "__DEVTOOLS__": true,
-        "PUBLIC_URL": true
+    parserOptions: {
+        ecmaVersion: 9,  // Allows for the parsing of modern ECMAScript features
+        sourceType: 'module',  // Allows for the use of imports
     },
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "arrowFunctions": true,
-            "blockBindings": true,
-            "classes": true,
-            "defaultParams": true,
-            "destructuring": true,
-            "forOf": true,
-            "generators": false,
-            "modules": true,
-            "objectLiteralComputedProperties": true,
-            "objectLiteralDuplicateProperties": false,
-            "objectLiteralShorthandMethods": true,
-            "objectLiteralShorthandProperties": true,
-            "restParams": true,
-            "spread": true,
-            "superInFunctions": true,
-            "templateStrings": true,
-        }
+    env: {
+        es6: true
     },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "rules": {
+    rules: {
         "no-debugger": 1,
         // Possible errors
         "comma-dangle": [
@@ -241,7 +208,7 @@ module.exports = {
             {
                 "ignoreUrls": true,
                 "ignoreComments": false,
-                "ignorePattern": "^\\s*(const|let|var)\\s+\\w+\\s+\\=\\s+\\/.*\\/(|i|g|m|ig|im|gm|igm);?$"
+                "ignorePattern": "^\\s*(const|let|var)\\s+\\w+\\s+\=\\s+\\/.*\\/(|i|g|m|ig|im|gm|igm);?$"
             }
         ],
         "max-nested-callbacks": [

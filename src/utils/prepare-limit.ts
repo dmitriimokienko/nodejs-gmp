@@ -1,4 +1,4 @@
-import {toNumber, isInteger} from 'lodash';
+import { toNumber, isInteger } from 'lodash';
 
 export const prepareLimit = (count?: string) => {
     const limit = toNumber(count);

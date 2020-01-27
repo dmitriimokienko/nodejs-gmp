@@ -1,1 +1,1 @@
-export {UserServiceImpl} from './service';
+export { UserServiceImpl } from './service';

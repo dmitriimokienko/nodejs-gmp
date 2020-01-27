@@ -1,5 +1,5 @@
-import {Model, DataTypes} from 'sequelize';
-import {sequelize} from '../../../../resources';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../../../../resources';
 
 const attributes = {
     id: {
@@ -7,30 +7,30 @@ const attributes = {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false,
-        unique: true,
+        unique: true
     },
     login: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
     age: {
         type: DataTypes.INTEGER,
         defaultValue: null,
-        allowNull: true,
+        allowNull: true
     },
     isDeleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-        allowNull: false,
+        allowNull: false
     }
 };
 
-const options = {sequelize, modelName: 'user'};
+const options = { sequelize, modelName: 'user' };
 
 export class UserModel extends Model {
     public readonly id?: string;

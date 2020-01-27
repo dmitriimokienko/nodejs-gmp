@@ -1,10 +1,10 @@
-import {pickBy} from 'lodash';
-import {UserService} from '../interfaces';
-import {UserModelType} from '../types';
-import {UserModel} from '../model';
-import {handleDaoError, prepareLimit, prepareLogin} from '../../../utils';
-import {UserDTO} from '../dto';
-import createError from "http-errors";
+import createError from 'http-errors';
+import { pickBy } from 'lodash';
+import { UserService } from '../interfaces';
+import { UserModelType } from '../types';
+import { UserModel } from '../model';
+import { handleDaoError, prepareLimit, prepareLogin } from '../../../utils';
+import { UserDTO } from '../dto';
 
 export class UserServiceImpl implements UserService {
     private readonly userModel: UserModelType;
@@ -17,19 +17,18 @@ export class UserServiceImpl implements UserService {
         const login = prepareLogin(loginSubstring);
         const limit = prepareLimit(count);
 
-        const where = pickBy({isDeleted: false, login});
-        const options = pickBy({where, limit, raw: true});
+        const where = pickBy({ isDeleted: false, login });
+        const options = pickBy({ where, limit, raw: true });
 
         return this.userModel.findAll(options);
     };
 
     public getById = (id: string): Promise<UserModel> => {
-        return this.userModel.findByPk(id)
-            .then(handleDaoError('User not found'));
+        return this.userModel.findByPk(id).then(handleDaoError('User not found'));
     };
 
-    public create = async ({login, password, age}: UserDTO): Promise<UserModel> => {
-        const user: UserModel | null = await this.userModel.findOne({where: {login}});
+    public create = async ({ login, password, age }: UserDTO): Promise<UserModel> => {
+        const user: UserModel | null = await this.userModel.findOne({ where: { login } });
 
         if (user) {
             throw createError(400, 'This login already in use');
@@ -37,12 +36,12 @@ export class UserServiceImpl implements UserService {
 
         const dto: UserDTO = new UserDTO(login, password, age);
 
-        return this.userModel.create(dto)
-            .then(handleDaoError('Missing required parameters'));
+        return this.userModel.create(dto).then(handleDaoError('Missing required parameters'));
     };
 
-    public update = (id: string, {password, age}: UserDTO): Promise<UserModel> => {
-        return this.userModel.findByPk(id)
+    public update = (id: string, { password, age }: UserDTO): Promise<UserModel> => {
+        return this.userModel
+            .findByPk(id)
             .then((instance: any) => {
                 instance.password = password || instance.password;
                 instance.age = age || instance.age;
@@ -53,7 +52,6 @@ export class UserServiceImpl implements UserService {
     };
 
     public delete = (id: string): Promise<UserModel> => {
-        return this.userModel.update({isDelete: true}, {where: {id}})
-            .then(handleDaoError('User not found'));
+        return this.userModel.update({ isDelete: true }, { where: { id } }).then(handleDaoError('User not found'));
     };
 }

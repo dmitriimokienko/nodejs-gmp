@@ -12,6 +12,6 @@ export class UserDTO {
         this.login = login;
         this.password = password;
         this.age = age || null;
-        this.isDeleted = false
+        this.isDeleted = false;
     }
 }

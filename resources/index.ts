@@ -1,1 +1,1 @@
-export {sequelize} from './db.connection.properties';
+export { sequelize } from './db.connection.properties';

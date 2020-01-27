@@ -1,7 +1,7 @@
-import {Request, Response, NextFunction} from 'express';
-import {get} from 'lodash';
-import {UserService} from '../interfaces';
-import {UserModel} from '../model';
+import { Request, Response, NextFunction } from 'express';
+import { get } from 'lodash';
+import { UserService } from '../interfaces';
+import { UserModel } from '../model';
 
 export class UserController {
     private readonly service: UserService;
@@ -41,7 +41,7 @@ export class UserController {
             const password = get(req, 'body.password');
             const age = get(req, 'body.age', null);
 
-            const user: UserModel = await this.service.create({login, password, age});
+            const user: UserModel = await this.service.create({ login, password, age });
 
             res.json(user);
         } catch (e) {
@@ -57,7 +57,7 @@ export class UserController {
             const password = get(req, 'body.password');
             const age = get(req, 'body.age', null);
 
-            const user: UserModel = await this.service.update(id, {login, password, age});
+            const user: UserModel = await this.service.update(id, { login, password, age });
 
             res.json(user);
         } catch (e) {
