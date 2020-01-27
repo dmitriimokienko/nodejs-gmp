@@ -1,7 +1,6 @@
+import Boom from '@hapi/boom';
 import { Schema } from '@hapi/joi';
 import { NextFunction, Request, Response } from 'express';
-import createError from 'http-errors';
-import { get } from 'lodash';
 
 type Validation = {
     error?: Error;
@@ -13,10 +12,8 @@ export const validateSchema = (schema: Schema) => (req: Request, _res: Response,
     const validation: Validation = schema.validate(req.body, config);
 
     if (validation.error) {
-        const message = get(validation, 'error.message');
-        const error = createError(400, message);
-
-        next(error);
+        const { message } = validation.error;
+        next(Boom.badRequest(message));
     } else {
         next();
     }

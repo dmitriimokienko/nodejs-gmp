@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
 import Boom from '@hapi/boom';
+import { Request, Response, NextFunction } from 'express';
 
-export const methodNotAllowed = (_req: Request, res: Response) => {
-    res.status(405).json(Boom.methodNotAllowed('that method is not allowed'));
+export const methodNotAllowed = (_req: Request, _res: Response, next: NextFunction) => {
+    next(Boom.methodNotAllowed('Method is not allowed'));
 };

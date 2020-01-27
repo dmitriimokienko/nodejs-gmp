@@ -1,10 +1,12 @@
-export class HttpException extends Error {
-    status: number;
+import Boom from '@hapi/boom';
+
+export class HttpException extends Boom.Boom {
+    statusCode: number;
     message: string;
 
-    constructor(status: number, message: string) {
+    constructor(statusCode: number, message: string) {
         super(message);
-        this.status = status;
+        this.statusCode = statusCode;
         this.message = message;
     }
 }

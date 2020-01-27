@@ -1,4 +1,4 @@
-import createError from 'http-errors';
+import Boom from '@hapi/boom';
 import { pickBy } from 'lodash';
 import { UserService } from '../interfaces';
 import { UserModelType } from '../types';
@@ -31,7 +31,7 @@ export class UserServiceImpl implements UserService {
         const user: UserModel | null = await this.userModel.findOne({ where: { login } });
 
         if (user) {
-            throw createError(400, 'This login already in use');
+            throw Boom.badRequest('This login already in use');
         }
 
         const dto: UserDTO = new UserDTO(login, password, age);
@@ -42,13 +42,13 @@ export class UserServiceImpl implements UserService {
     public update = (id: string, { password, age }: UserDTO): Promise<UserModel> => {
         return this.userModel
             .findByPk(id)
-            .then((instance: any) => {
+            .then(handleDaoError('User not found'))
+            .then((instance: UserModel) => {
                 instance.password = password || instance.password;
                 instance.age = age || instance.age;
                 instance.save();
                 return instance;
-            })
-            .then(handleDaoError('User not found'));
+            });
     };
 
     public delete = (id: string): Promise<UserModel> => {

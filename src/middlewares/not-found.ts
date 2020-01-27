@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
 import Boom from '@hapi/boom';
+import { Request, Response, NextFunction } from 'express';
 
-export const notFound = (_req: Request, res: Response) => {
-    res.status(404).json(Boom.notFound('Invalid Request'));
+export const notFound = (_req: Request, _res: Response, next: NextFunction) => {
+    next(Boom.notFound('Invalid Request'));
 };
