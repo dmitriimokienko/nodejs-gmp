@@ -1,11 +1,12 @@
 import {Request, Response, NextFunction} from 'express';
 import {get} from 'lodash';
-import {IUserService} from '../interfaces';
+import {UserService} from '../interfaces';
+import {UserModel} from '../model';
 
 export class UserController {
-    private readonly service: IUserService;
+    private readonly service: UserService;
 
-    constructor(service: IUserService) {
+    constructor(service: UserService) {
         this.service = service;
     }
 
@@ -13,7 +14,9 @@ export class UserController {
         try {
             const loginSubstring = get(req, 'query.login');
             const limit = get(req, 'query.limit');
-            const users = await this.service.select(loginSubstring, limit);
+
+            const users: UserModel[] = await this.service.select(loginSubstring, limit);
+
             res.json(users);
         } catch (e) {
             next(e);
@@ -23,7 +26,9 @@ export class UserController {
     public getById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
-            const user = await this.service.getById(id);
+
+            const user: UserModel = await this.service.getById(id);
+
             res.json(user);
         } catch (e) {
             next(e);
@@ -32,8 +37,12 @@ export class UserController {
 
     public create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const {body = {}} = req;
-            const user = await this.service.create(body);
+            const login = get(req, 'body.login');
+            const password = get(req, 'body.password');
+            const age = get(req, 'body.age', null);
+
+            const user: UserModel = await this.service.create({login, password, age});
+
             res.json(user);
         } catch (e) {
             next(e);
@@ -43,8 +52,13 @@ export class UserController {
     public update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
-            const {body = {}} = req;
-            const user = await this.service.update(id, body);
+
+            const login = get(req, 'body.login');
+            const password = get(req, 'body.password');
+            const age = get(req, 'body.age', null);
+
+            const user: UserModel = await this.service.update(id, {login, password, age});
+
             res.json(user);
         } catch (e) {
             next(e);
@@ -54,7 +68,9 @@ export class UserController {
     public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
-            const user = await this.service.delete(id);
+
+            const user: UserModel = await this.service.delete(id);
+
             res.json(user);
         } catch (e) {
             next(e);

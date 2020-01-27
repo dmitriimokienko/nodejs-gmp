@@ -1,6 +1,6 @@
 import {UserModel} from './model';
 
-export interface IUserService {
+export interface UserService {
     select(loginSubstring: string, count?: string): Promise<UserModel[]>
 
     getById(id: string): Promise<UserModel>,

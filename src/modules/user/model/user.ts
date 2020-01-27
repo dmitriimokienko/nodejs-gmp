@@ -7,10 +7,14 @@ const attributes = {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false,
+        unique: true,
     },
     login: {
         type: DataTypes.STRING,
         allowNull: false,
+        // validate: {
+        //     unique: true
+        // }
     },
     password: {
         type: DataTypes.STRING,

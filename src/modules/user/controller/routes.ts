@@ -1,14 +1,15 @@
 import express, {Router} from 'express';
 import {url} from '../url';
 import {UserController} from './controller';
-import {UserService} from '../service';
+import {UserServiceImpl} from '../service';
 import {validateSchema} from '../../../middlewares';
-import {userValidation} from '../validation';
+import {userUpdateValidation, userValidation} from '../validation';
 import {UserModel} from '../model';
 
 export const userRouter: Router = express.Router();
 
-const controller = new UserController(new UserService(UserModel));
+const service = new UserServiceImpl(UserModel);
+const controller = new UserController(service);
 
 userRouter.route(url.users)
     .get(controller.get)
@@ -16,5 +17,5 @@ userRouter.route(url.users)
 
 userRouter.route(url.user)
     .get(controller.getById)
-    .put(validateSchema(userValidation), controller.update)
+    .put(validateSchema(userUpdateValidation), controller.update)
     .delete(controller.delete);
