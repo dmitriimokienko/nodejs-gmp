@@ -4,7 +4,7 @@ import createError from 'http-errors';
 import {get} from 'lodash';
 
 type Validation = {
-    error: Error,
+    error?: Error,
     value: Object
 }
 
@@ -12,8 +12,12 @@ export const validateSchema = (schema: Schema) => (req: Request, _res: Response,
     const config = {abortEarly: false, allowUnknown: false};
     const validation: Validation = schema.validate(req.body, config);
 
-    const message = get(validation, 'error.message');
-    const error = createError(400, message);
+    if (validation.error) {
+        const message = get(validation, 'error.message');
+        const error = createError(400, message);
 
-    next(error);
+        next(error);
+    } else {
+        next();
+    }
 };
