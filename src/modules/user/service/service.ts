@@ -28,15 +28,18 @@ export class UserServiceImpl implements UserService {
     };
 
     public create = async ({ login, password, age }: UserDTO): Promise<UserModel> => {
-        const user: UserModel | null = await this.userModel.findOne({ where: { login } });
+        const dto: UserDTO = new UserDTO(login, password, age);
 
-        if (user) {
+        const [user, created]: [UserModel, boolean] = await this.userModel.findOrCreate({
+            where: { login },
+            defaults: dto
+        });
+
+        if (!created) {
             throw Boom.badRequest('This login already in use');
         }
 
-        const dto: UserDTO = new UserDTO(login, password, age);
-
-        return this.userModel.create(dto).then(handleDaoError('Missing required parameters'));
+        return user;
     };
 
     public update = (id: string, { password, age }: UserDTO): Promise<UserModel> => {
