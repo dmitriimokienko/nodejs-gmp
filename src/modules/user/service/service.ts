@@ -4,6 +4,7 @@ import {UserModelType} from '../types';
 import {UserModel} from '../model';
 import {handleDaoError, prepareLimit, prepareLogin} from '../../../utils';
 import {UserDTO} from '../dto';
+import createError from "http-errors";
 
 export class UserServiceImpl implements UserService {
     private readonly userModel: UserModelType;
@@ -27,9 +28,16 @@ export class UserServiceImpl implements UserService {
             .then(handleDaoError('User not found'));
     };
 
-    public create = ({login, password, age}: UserDTO): Promise<UserModel> => {
-        const user: UserDTO = new UserDTO(login, password, age);
-        return this.userModel.create(user)
+    public create = async ({login, password, age}: UserDTO): Promise<UserModel> => {
+        const user: UserModel | null = await this.userModel.findOne({where: {login}});
+
+        if (user) {
+            throw createError(400, 'This login already in use');
+        }
+
+        const dto: UserDTO = new UserDTO(login, password, age);
+
+        return this.userModel.create(dto)
             .then(handleDaoError('Missing required parameters'));
     };
 

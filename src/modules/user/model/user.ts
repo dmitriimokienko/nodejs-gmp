@@ -12,9 +12,7 @@ const attributes = {
     login: {
         type: DataTypes.STRING,
         allowNull: false,
-        // validate: {
-        //     unique: true
-        // }
+        unique: true,
     },
     password: {
         type: DataTypes.STRING,
