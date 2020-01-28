@@ -1,5 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../../../resources';
+// @ts-ignore
+import users from '../../../../data/users.json';
 
 const attributes = {
     id: {
@@ -41,3 +43,7 @@ export class UserModel extends Model {
 }
 
 UserModel.init(attributes, options);
+
+export const initUserModel = () => {
+    UserModel.bulkCreate(users);
+};

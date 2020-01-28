@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import { config } from './config';
-import { userRouter } from './modules/user';
+import { userRouter, initUserModel } from './modules/user';
 import { sequelize } from '../resources';
 import { httpError } from './middlewares';
 
@@ -13,7 +13,8 @@ app.use('/api', [userRouter]);
 app.use(httpError());
 
 sequelize
-    .sync()
+    .sync({ force: true })
+    .then(initUserModel)
     .then(() => {
         app.listen(config.port, () => {
             console.log(`Application running on http://${config.host}:${config.port}`);
