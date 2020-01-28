@@ -1,2 +1,2 @@
 export { userRouter } from './controller';
-export { initUserModel } from './model';
+export { initializeUserTable } from './initialize-table';

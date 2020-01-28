@@ -1,5 +1,4 @@
 import express, { Router } from 'express';
-import { url } from '../url';
 import { UserController } from './controller';
 import { UserServiceImpl } from '../service';
 import { methodNotAllowed, notFound, validateSchema } from '../../../middlewares';
@@ -12,13 +11,13 @@ const service = new UserServiceImpl(UserModel);
 const controller = new UserController(service);
 
 userRouter
-    .route(url.users)
+    .route('/users')
     .get(controller.get)
     .post(validateSchema(userValidation), controller.create)
     .all(methodNotAllowed);
 
 userRouter
-    .route(url.user)
+    .route('/users/:id')
     .get(controller.getById)
     .put(validateSchema(userUpdateValidation), controller.update)
     .delete(controller.delete)
