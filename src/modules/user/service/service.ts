@@ -3,7 +3,7 @@ import { pickBy } from 'lodash';
 import { UserService } from '../interfaces';
 import { UserModelType } from '../types';
 import { UserModel } from '../model';
-import { handleDaoError, prepareLimit, prepareLogin } from '../../../utils';
+import { handleDaoError, prepareLimit, prepareSearchSubstring } from '../../../utils';
 import { UserDTO } from '../dto';
 
 export class UserServiceImpl implements UserService {
@@ -14,7 +14,7 @@ export class UserServiceImpl implements UserService {
     }
 
     public select = (loginSubstring?: string, count?: string): Promise<UserModel[]> => {
-        const login = prepareLogin(loginSubstring);
+        const login = prepareSearchSubstring(loginSubstring);
         const limit = prepareLimit(count);
 
         const where = login ? { isDeleted: false, login } : { isDeleted: false };

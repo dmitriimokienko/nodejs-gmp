@@ -1,23 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
 import { get } from 'lodash';
-import { UserService } from '../interfaces';
-import { UserModel } from '../model';
+import { GroupService } from '../interfaces';
+import { GroupModel } from '../model';
 
-export class UserController {
-    private readonly service: UserService;
+export class GroupController {
+    private readonly service: GroupService;
 
-    constructor(service: UserService) {
+    constructor(service: GroupService) {
         this.service = service;
     }
 
     public get = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const loginSubstring = get(req, 'query.login');
+            const nameSubstring = get(req, 'query.name');
             const limit = get(req, 'query.limit');
 
-            const users: UserModel[] = await this.service.select(loginSubstring, limit);
+            const groups: GroupModel[] = await this.service.select(nameSubstring, limit);
 
-            res.json(users);
+            res.json(groups);
         } catch (e) {
             next(e);
         }
@@ -27,9 +27,9 @@ export class UserController {
         try {
             const id = get(req, 'params.id');
 
-            const user: UserModel = await this.service.getById(id);
+            const group: GroupModel = await this.service.getById(id);
 
-            res.json(user);
+            res.json(group);
         } catch (e) {
             next(e);
         }
@@ -37,13 +37,12 @@ export class UserController {
 
     public create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const login = get(req, 'body.login');
-            const password = get(req, 'body.password');
-            const age = get(req, 'body.age', null);
+            const name = get(req, 'body.name');
+            const permissions = get(req, 'body.permissions');
 
-            const user: UserModel = await this.service.create({ login, password, age });
+            const group: GroupModel = await this.service.create({ name, permissions });
 
-            res.json(user);
+            res.json(group);
         } catch (e) {
             next(e);
         }
@@ -53,12 +52,11 @@ export class UserController {
         try {
             const id = get(req, 'params.id');
 
-            const password = get(req, 'body.password');
-            const age = get(req, 'body.age', null);
+            const permissions = get(req, 'body.permissions');
 
-            const user: UserModel = await this.service.update(id, { password, age });
+            const group: GroupModel = await this.service.update(id, permissions);
 
-            res.json(user);
+            res.json(group);
         } catch (e) {
             next(e);
         }
@@ -68,9 +66,9 @@ export class UserController {
         try {
             const id = get(req, 'params.id');
 
-            const user: UserModel = await this.service.delete(id);
+            const group: GroupModel = await this.service.delete(id);
 
-            res.json(user);
+            res.json(group);
         } catch (e) {
             next(e);
         }

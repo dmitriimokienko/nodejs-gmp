@@ -1,0 +1,1 @@
+export { GroupServiceImpl } from './service';

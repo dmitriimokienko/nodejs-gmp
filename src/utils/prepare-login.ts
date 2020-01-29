@@ -1,4 +1,4 @@
 import { Op } from 'sequelize';
 
-export const prepareLogin = (loginSubstring?: string) =>
+export const prepareSearchSubstring = (loginSubstring?: string) =>
     loginSubstring ? { [Op.like]: `%${loginSubstring}%` } : undefined;

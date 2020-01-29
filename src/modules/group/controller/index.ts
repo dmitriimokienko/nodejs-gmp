@@ -1,0 +1,1 @@
+export { groupRouter } from './routes';

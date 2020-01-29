@@ -30,7 +30,7 @@ const attributes = {
     }
 };
 
-const options = { sequelize, modelName: 'user' };
+const options = { sequelize, modelName: 'User', tableName: 'Users' };
 
 export class UserModel extends Model {
     public readonly id?: string;
