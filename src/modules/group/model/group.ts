@@ -23,7 +23,7 @@ const attributes = {
 
 const options = { sequelize, modelName: 'Group', tableName: 'Groups' };
 
-export class GroupModel extends Model {
+export class GroupModel extends Model<GroupModel> {
     public readonly id?: string;
     public name!: string;
     public permissions!: Permission[];

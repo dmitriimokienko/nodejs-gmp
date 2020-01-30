@@ -1,29 +1,34 @@
+import { injectable, inject } from 'inversify';
+import 'reflect-metadata';
 import Boom from '@hapi/boom';
+import { TYPES } from '../../../types';
 import { GroupService } from '../interfaces';
-import { GroupModelType } from '../types';
+import { GroupSequelizeModel } from '../types';
 import { GroupModel } from '../model';
 import { createSequelizeFindOptions, handleDaoError } from '../../../utils';
 import { GroupDTO } from '../dto';
 import { Permission } from '../permission';
 
+@injectable()
 export class GroupServiceImpl implements GroupService {
-    private readonly groupModel: GroupModelType;
+    private readonly groupModel: GroupSequelizeModel;
 
-    constructor(groupModel: GroupModelType) {
+    // add dao -> class GroupRepositoryImpl implements GroupRepository
+    constructor(@inject(TYPES.GroupSequelizeModel) groupModel: GroupSequelizeModel) {
         this.groupModel = groupModel;
     }
 
-    public select = (nameSubstring?: string, limit?: string): Promise<GroupModel[]> => {
+    public select(nameSubstring?: string, limit?: string): Promise<GroupModel[]> {
         const options = createSequelizeFindOptions({ name: nameSubstring }, limit);
 
         return this.groupModel.findAll(options);
-    };
+    }
 
     public getById = (id: string): Promise<GroupModel> => {
         return this.groupModel.findByPk(id).then(handleDaoError('Group not found'));
     };
 
-    public create = async ({ name, permissions }: GroupDTO): Promise<GroupModel> => {
+    public async create({ name, permissions }: GroupDTO): Promise<GroupModel> {
         const dto: GroupDTO = new GroupDTO(name, permissions);
 
         const [group, created]: [GroupModel, boolean] = await this.groupModel.findOrCreate({
@@ -36,9 +41,9 @@ export class GroupServiceImpl implements GroupService {
         }
 
         return group;
-    };
+    }
 
-    public update = (id: string, permissions: Permission[]): Promise<GroupModel> => {
+    public update(id: string, permissions: Permission[]): Promise<GroupModel> {
         return this.groupModel
             .findByPk(id)
             .then(handleDaoError('Group not found'))
@@ -47,9 +52,9 @@ export class GroupServiceImpl implements GroupService {
                 instance.save();
                 return instance;
             });
-    };
+    }
 
-    public delete = (id: string): Promise<GroupModel> => {
+    public delete(id: string): Promise<GroupModel> {
         return this.groupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
-    };
+    }
 }

@@ -32,7 +32,7 @@ const options = {
     paranoid: true
 };
 
-export class UserModel extends Model {
+export class UserModel extends Model<UserModel> {
     public readonly id?: string;
     public login!: string;
     public password!: string;

@@ -1,14 +1,14 @@
 import express, { Router } from 'express';
-import { GroupController } from './controller';
-import { GroupServiceImpl } from '../service';
 import { methodNotAllowed, validateSchema } from '../../../middlewares';
 import { groupUpdateValidation, groupValidation } from '../validation';
-import { GroupModel } from '../model';
+import container from "../../../../inversify.config";
+import {TYPES} from "../../../types";
+import {Controller} from "../interfaces";
 
 export const groupRouter: Router = express.Router();
 
-const service = new GroupServiceImpl(GroupModel);
-const controller = new GroupController(service);
+// const service = container.get<GroupService>(TYPES.GroupService);
+const controller = container.get<Controller>(TYPES.GroupController);
 
 groupRouter
     .route('/groups')

@@ -18,9 +18,13 @@
     "esModuleInterop": true,
     "lib": [
       "dom",
-      "es5",
+      "es6",
       "scripthost",
       "es2015.promise"
-    ]
+    ],
+    "types": ["reflect-metadata"],
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }
