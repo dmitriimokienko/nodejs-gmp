@@ -1,60 +1,41 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
-import Boom from '@hapi/boom';
 import { TYPES } from '../../../types';
-import { GroupService } from '../interfaces';
-import { GroupSequelizeModel } from '../types';
+import { GroupRepository, GroupService } from '../interfaces';
 import { GroupModel } from '../model';
-import { createSequelizeFindOptions, handleDaoError } from '../../../utils';
+import { createSequelizeFindOptions } from '../../../utils';
 import { GroupDTO } from '../dto';
 import { Permission } from '../permission';
 
 @injectable()
 export class GroupServiceImpl implements GroupService {
-    private readonly groupModel: GroupSequelizeModel;
+    private readonly groupRepository: GroupRepository;
 
-    // add dao -> class GroupRepositoryImpl implements GroupRepository
-    constructor(@inject(TYPES.GroupSequelizeModel) groupModel: GroupSequelizeModel) {
-        this.groupModel = groupModel;
+    constructor(@inject(TYPES.GroupRepository) groupRepository: GroupRepository) {
+        this.groupRepository = groupRepository;
     }
 
     public select(nameSubstring?: string, limit?: string): Promise<GroupModel[]> {
         const options = createSequelizeFindOptions({ name: nameSubstring }, limit);
 
-        return this.groupModel.findAll(options);
+        return this.groupRepository.select(options);
     }
 
     public getById = (id: string): Promise<GroupModel> => {
-        return this.groupModel.findByPk(id).then(handleDaoError('Group not found'));
+        return this.groupRepository.getById(id);
     };
 
     public async create({ name, permissions }: GroupDTO): Promise<GroupModel> {
         const dto: GroupDTO = new GroupDTO(name, permissions);
 
-        const [group, created]: [GroupModel, boolean] = await this.groupModel.findOrCreate({
-            where: { name },
-            defaults: dto
-        });
-
-        if (!created) {
-            throw Boom.badRequest('This name already in use');
-        }
-
-        return group;
+        return this.groupRepository.create(dto);
     }
 
     public update(id: string, permissions: Permission[]): Promise<GroupModel> {
-        return this.groupModel
-            .findByPk(id)
-            .then(handleDaoError('Group not found'))
-            .then((instance: GroupModel) => {
-                instance.permissions = permissions || instance.permissions;
-                instance.save();
-                return instance;
-            });
+        return this.groupRepository.update(id, permissions);
     }
 
     public delete(id: string): Promise<GroupModel> {
-        return this.groupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
+        return this.groupRepository.delete(id);
     }
 }

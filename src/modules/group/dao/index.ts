@@ -1,0 +1,1 @@
+export { GroupRepositoryImplPostgresql } from './repository';
