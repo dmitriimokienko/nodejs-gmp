@@ -14,7 +14,7 @@ export class GroupController implements Controller {
         this.service = service;
     }
 
-    public async get(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public get = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const nameSubstring = get(req, 'query.name');
             const limit = get(req, 'query.limit');
@@ -25,9 +25,9 @@ export class GroupController implements Controller {
         } catch (e) {
             next(e);
         }
-    }
+    };
 
-    public async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public getById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
 
@@ -37,9 +37,9 @@ export class GroupController implements Controller {
         } catch (e) {
             next(e);
         }
-    }
+    };
 
-    public async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const name = get(req, 'body.name');
             const permissions = get(req, 'body.permissions');
@@ -50,9 +50,9 @@ export class GroupController implements Controller {
         } catch (e) {
             next(e);
         }
-    }
+    };
 
-    public async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
             const permissions = get(req, 'body.permissions');
@@ -63,9 +63,9 @@ export class GroupController implements Controller {
         } catch (e) {
             next(e);
         }
-    }
+    };
 
-    public async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
 
@@ -75,5 +75,5 @@ export class GroupController implements Controller {
         } catch (e) {
             next(e);
         }
-    }
+    };
 }

@@ -11,15 +11,15 @@ const controller: Controller = container.get<Controller>(TYPES.GroupController);
 
 groupRouter
     .route('/groups')
-    .get(controller.get.bind(controller))
-    .post(validateSchema(groupValidation), controller.create.bind(controller))
+    .get(controller.get)
+    .post(validateSchema(groupValidation), controller.create)
     .all(methodNotAllowed);
 
 groupRouter
     .route('/groups/:id')
-    .get(controller.getById.bind(controller))
-    .put(validateSchema(groupUpdateValidation), controller.update.bind(controller))
-    .delete(controller.delete.bind(controller))
+    .get(controller.getById)
+    .put(validateSchema(groupUpdateValidation), controller.update)
+    .delete(controller.delete)
     .all(methodNotAllowed);
 
 // TODO: fix

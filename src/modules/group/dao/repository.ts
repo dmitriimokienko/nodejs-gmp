@@ -19,7 +19,7 @@ export class GroupRepositoryImplPostgresql implements GroupRepository {
 
     public async create(dto: GroupDTO): Promise<GroupModel> {
         const [group, created]: [GroupModel, boolean] = await GroupModel.findOrCreate({
-            where: { name },
+            where: { name: dto.name },
             defaults: dto
         });
 
