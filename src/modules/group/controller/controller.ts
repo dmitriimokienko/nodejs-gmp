@@ -51,7 +51,6 @@ export class GroupController {
     public update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
-
             const permissions = get(req, 'body.permissions');
 
             const group: GroupModel = await this.service.update(id, permissions);

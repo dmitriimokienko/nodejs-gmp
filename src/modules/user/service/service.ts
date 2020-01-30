@@ -2,9 +2,8 @@ import Boom from '@hapi/boom';
 import { UserService } from '../interfaces';
 import { UserModelType } from '../types';
 import { UserModel } from '../model';
-import { handleDaoError } from '../../../utils';
+import { createSequelizeFindOptions, handleDaoError } from '../../../utils';
 import { UserDTO } from '../dto';
-import { createSequelizeFindOptions } from '../../../utils/create-sequelize-find-options';
 
 export class UserServiceImpl implements UserService {
     private readonly userModel: UserModelType;

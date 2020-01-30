@@ -2,10 +2,9 @@ import Boom from '@hapi/boom';
 import { GroupService } from '../interfaces';
 import { GroupModelType } from '../types';
 import { GroupModel } from '../model';
-import { handleDaoError } from '../../../utils';
+import { createSequelizeFindOptions, handleDaoError } from '../../../utils';
 import { GroupDTO } from '../dto';
 import { Permission } from '../permission';
-import { createSequelizeFindOptions } from '../../../utils/create-sequelize-find-options';
 
 export class GroupServiceImpl implements GroupService {
     private readonly groupModel: GroupModelType;

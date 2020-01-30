@@ -52,7 +52,6 @@ export class UserController {
     public update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = get(req, 'params.id');
-
             const password = get(req, 'body.password');
             const age = get(req, 'body.age', null);
 
