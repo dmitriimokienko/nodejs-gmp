@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 import { GroupController } from './controller';
 import { GroupServiceImpl } from '../service';
-import { methodNotAllowed, notFound, validateSchema } from '../../../middlewares';
-import { groupValidation } from '../validation';
+import { methodNotAllowed, validateSchema } from '../../../middlewares';
+import { groupUpdateValidation, groupValidation } from '../validation';
 import { GroupModel } from '../model';
 
 export const groupRouter: Router = express.Router();
@@ -19,8 +19,9 @@ groupRouter
 groupRouter
     .route('/groups/:id')
     .get(controller.getById)
-    .put(validateSchema(groupValidation), controller.update)
+    .put(validateSchema(groupUpdateValidation), controller.update)
     .delete(controller.delete)
     .all(methodNotAllowed);
 
-groupRouter.all('*', notFound);
+// TODO: fix
+// groupRouter.all('*', notFound);

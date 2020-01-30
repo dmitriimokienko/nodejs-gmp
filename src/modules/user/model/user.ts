@@ -22,22 +22,21 @@ const attributes = {
         type: DataTypes.INTEGER,
         defaultValue: null,
         allowNull: true
-    },
-    isDeleted: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
     }
 };
 
-const options = { sequelize, modelName: 'User', tableName: 'Users' };
+const options = {
+    sequelize,
+    modelName: 'User',
+    tableName: 'Users',
+    paranoid: true
+};
 
 export class UserModel extends Model {
     public readonly id?: string;
     public login!: string;
     public password!: string;
     public age?: number | null;
-    public isDeleted?: boolean;
 }
 
 UserModel.init(attributes, options);

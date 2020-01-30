@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import { UserController } from './controller';
 import { UserServiceImpl } from '../service';
-import { methodNotAllowed, notFound, validateSchema } from '../../../middlewares';
+import { methodNotAllowed, validateSchema } from '../../../middlewares';
 import { userUpdateValidation, userValidation } from '../validation';
 import { UserModel } from '../model';
 
@@ -22,5 +22,3 @@ userRouter
     .put(validateSchema(userUpdateValidation), controller.update)
     .delete(controller.delete)
     .all(methodNotAllowed);
-
-userRouter.all('*', notFound);

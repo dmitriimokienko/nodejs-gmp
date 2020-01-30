@@ -1,8 +1,6 @@
 import Joi from '@hapi/joi';
 
 export const userValidation = Joi.object({
-    id: Joi.string().guid({ version: 'uuidv4' }),
-
     login: Joi.string()
         .alphanum()
         .min(3)
@@ -16,9 +14,7 @@ export const userValidation = Joi.object({
     age: Joi.number()
         .integer()
         .min(4)
-        .max(130),
-
-    isDeleted: Joi.boolean()
+        .max(130)
 });
 
 export const userUpdateValidation = Joi.object({

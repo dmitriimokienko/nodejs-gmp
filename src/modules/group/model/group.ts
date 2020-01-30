@@ -15,7 +15,7 @@ const attributes = {
         allowNull: false,
         unique: true
     },
-    permission: {
+    permissions: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false
     }

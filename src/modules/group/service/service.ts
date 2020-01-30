@@ -18,7 +18,7 @@ export class GroupServiceImpl implements GroupService {
         const name = prepareSearchSubstring(nameSubstring);
         const limit = prepareLimit(count);
 
-        const where = name ? { isDeleted: false, name } : { isDeleted: false };
+        const where = name ? { name } : {};
         const options = pickBy({ where, limit, raw: true });
 
         return this.groupModel.findAll(options);
