@@ -1,10 +1,10 @@
 import Boom from '@hapi/boom';
-import { pickBy } from 'lodash';
 import { UserService } from '../interfaces';
 import { UserModelType } from '../types';
 import { UserModel } from '../model';
-import { handleDaoError, prepareLimit, prepareSearchSubstring } from '../../../utils';
+import { handleDaoError } from '../../../utils';
 import { UserDTO } from '../dto';
+import { createSequelizeFindOptions } from '../../../utils/create-sequelize-find-options';
 
 export class UserServiceImpl implements UserService {
     private readonly userModel: UserModelType;
@@ -13,12 +13,8 @@ export class UserServiceImpl implements UserService {
         this.userModel = userModel;
     }
 
-    public select = (loginSubstring?: string, count?: string): Promise<UserModel[]> => {
-        const login = prepareSearchSubstring(loginSubstring);
-        const limit = prepareLimit(count);
-
-        const where = login ? { login } : {};
-        const options = pickBy({ where, limit, raw: true });
+    public select = (loginSubstring?: string, limit?: string): Promise<UserModel[]> => {
+        const options = createSequelizeFindOptions({ login: loginSubstring }, limit);
 
         return this.userModel.findAll(options);
     };

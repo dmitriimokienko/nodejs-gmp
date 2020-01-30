@@ -1,11 +1,11 @@
 import Boom from '@hapi/boom';
-import { pickBy } from 'lodash';
 import { GroupService } from '../interfaces';
 import { GroupModelType } from '../types';
 import { GroupModel } from '../model';
-import { handleDaoError, prepareLimit, prepareSearchSubstring } from '../../../utils';
+import { handleDaoError } from '../../../utils';
 import { GroupDTO } from '../dto';
 import { Permission } from '../permission';
+import { createSequelizeFindOptions } from '../../../utils/create-sequelize-find-options';
 
 export class GroupServiceImpl implements GroupService {
     private readonly groupModel: GroupModelType;
@@ -14,12 +14,8 @@ export class GroupServiceImpl implements GroupService {
         this.groupModel = groupModel;
     }
 
-    public select = (nameSubstring?: string, count?: string): Promise<GroupModel[]> => {
-        const name = prepareSearchSubstring(nameSubstring);
-        const limit = prepareLimit(count);
-
-        const where = name ? { name } : {};
-        const options = pickBy({ where, limit, raw: true });
+    public select = (nameSubstring?: string, limit?: string): Promise<GroupModel[]> => {
+        const options = createSequelizeFindOptions({ name: nameSubstring }, limit);
 
         return this.groupModel.findAll(options);
     };
