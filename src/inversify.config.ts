@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import { TYPES } from './types';
-import { RegistrableController } from './interfaces';
+import { RegistrableController } from "./interfaces";
 
 import { GroupRepository, GroupService } from './modules/group/interfaces';
 import { GroupController } from './modules/group/controller';

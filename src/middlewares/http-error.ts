@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { HttpException } from '../components';
+import { HttpException } from '../interfaces';
 
 export const httpError = () => (err: HttpException, _req: Request, res: Response, next: NextFunction) => {
     if (err.isBoom) {
