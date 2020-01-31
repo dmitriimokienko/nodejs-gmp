@@ -1,1 +1,1 @@
-export { GroupRepositoryImplPostgres } from './repository';
+export { UserRepositoryImplDb } from './repository';

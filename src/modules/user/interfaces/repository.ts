@@ -1,5 +1,5 @@
 import { UserDTO, UserModel } from '../model';
-import {UserUpdateType} from "../types";
+import { UserUpdateType } from '../types';
 
 export interface UserRepository {
     select(options: Object): Promise<UserModel[]>;

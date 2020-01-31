@@ -5,21 +5,21 @@ import { RegistrableController } from './interfaces';
 import { GroupRepository, GroupService } from './modules/group/interfaces';
 import { GroupController } from './modules/group/controller';
 import { GroupServiceImpl } from './modules/group/service';
-import { GroupRepositoryImplPostgres } from './modules/group/data-access';
+import { GroupRepositoryImplDb } from './modules/group/data-access';
 
 import { UserRepository, UserService } from './modules/user/interfaces';
 import { UserController } from './modules/user/controller';
 import { UserServiceImpl } from './modules/user/service';
-import { UserRepositoryImplPostgres } from './modules/user/data-access/repository';
+import { UserRepositoryImplDb } from './modules/user/data-access';
 
 const container = new Container();
 
 container.bind<RegistrableController>(TYPES.Controller).to(UserController);
 container.bind<UserService>(TYPES.UserService).to(UserServiceImpl);
-container.bind<UserRepository>(TYPES.UserRepository).to(UserRepositoryImplPostgres);
+container.bind<UserRepository>(TYPES.UserRepository).to(UserRepositoryImplDb);
 
 container.bind<RegistrableController>(TYPES.Controller).to(GroupController);
 container.bind<GroupService>(TYPES.GroupService).to(GroupServiceImpl);
-container.bind<GroupRepository>(TYPES.GroupRepository).to(GroupRepositoryImplPostgres);
+container.bind<GroupRepository>(TYPES.GroupRepository).to(GroupRepositoryImplDb);
 
 export default container;

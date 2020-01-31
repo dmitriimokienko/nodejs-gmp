@@ -3,11 +3,11 @@ import 'reflect-metadata';
 import Boom from '@hapi/boom';
 import { UserModel, UserDTO } from '../model';
 import { UserRepository } from '../interfaces';
-import {UserUpdateType} from "../types";
+import { UserUpdateType } from '../types';
 import { handleDaoError } from '../../../utils';
 
 @injectable()
-export class UserRepositoryImplPostgres implements UserRepository {
+export class UserRepositoryImplDb implements UserRepository {
     public select(options: Object): Promise<UserModel[]> {
         return UserModel.findAll(options);
     }

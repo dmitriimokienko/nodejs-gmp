@@ -1,1 +1,1 @@
-export {UserUpdateType} from './update';
+export { UserUpdateType } from './update';

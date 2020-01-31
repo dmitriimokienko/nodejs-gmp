@@ -7,7 +7,7 @@ import { Permission } from '../constants';
 import { GroupRepository } from '../interfaces';
 
 @injectable()
-export class GroupRepositoryImplPostgres implements GroupRepository {
+export class GroupRepositoryImplDb implements GroupRepository {
     public select(options: Object): Promise<GroupModel[]> {
         return GroupModel.findAll(options);
     }

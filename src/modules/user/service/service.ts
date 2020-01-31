@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { TYPES } from '../../../types';
 import { UserRepository, UserService } from '../interfaces';
 import { UserModel, UserDTO } from '../model';
-import {UserUpdateType} from "../types";
+import { UserUpdateType } from '../types';
 import { createSequelizeFindOptions } from '../../../utils';
 
 @injectable()
