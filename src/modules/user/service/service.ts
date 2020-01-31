@@ -1,55 +1,40 @@
-import Boom from '@hapi/boom';
-import { UserService } from '../interfaces';
-import { UserModelType } from '../types';
-import { UserModel } from '../model';
-import { createSequelizeFindOptions, handleDaoError } from '../../../utils';
-import { UserDTO } from '../dto';
+import { injectable, inject } from 'inversify';
+import 'reflect-metadata';
+import { TYPES } from '../../../types';
+import { UserRepository, UserService } from '../interfaces';
+import { UserModel, UserDTO } from '../model';
+import {UserUpdateType} from "../types";
+import { createSequelizeFindOptions } from '../../../utils';
 
+@injectable()
 export class UserServiceImpl implements UserService {
-    private readonly userModel: UserModelType;
+    private readonly userRepository: UserRepository;
 
-    constructor(userModel: UserModelType) {
-        this.userModel = userModel;
+    constructor(@inject(TYPES.UserRepository) userRepository: UserRepository) {
+        this.userRepository = userRepository;
     }
 
-    public select = (loginSubstring?: string, limit?: string): Promise<UserModel[]> => {
+    public select(loginSubstring?: string, limit?: string): Promise<UserModel[]> {
         const options = createSequelizeFindOptions({ login: loginSubstring }, limit);
 
-        return this.userModel.findAll(options);
-    };
+        return this.userRepository.select(options);
+    }
 
-    public getById = (id: string): Promise<UserModel> => {
-        return this.userModel.findByPk(id).then(handleDaoError('User not found'));
-    };
+    public getById(id: string): Promise<UserModel> {
+        return this.userRepository.getById(id);
+    }
 
-    public create = async ({ login, password, age }: UserDTO): Promise<UserModel> => {
+    public async create({ login, password, age }: UserDTO): Promise<UserModel> {
         const dto: UserDTO = new UserDTO(login, password, age);
 
-        const [user, created]: [UserModel, boolean] = await this.userModel.findOrCreate({
-            where: { login },
-            defaults: dto
-        });
+        return this.userRepository.create(dto);
+    }
 
-        if (!created) {
-            throw Boom.badRequest('This login already in use');
-        }
+    public update(id: string, { password, age }: UserUpdateType): Promise<UserModel> {
+        return this.userRepository.update(id, { password, age });
+    }
 
-        return user;
-    };
-
-    public update = (id: string, { password, age }: UserDTO): Promise<UserModel> => {
-        return this.userModel
-            .findByPk(id)
-            .then(handleDaoError('User not found'))
-            .then((instance: UserModel) => {
-                instance.password = password || instance.password;
-                instance.age = age || instance.age;
-                instance.save();
-                return instance;
-            });
-    };
-
-    public delete = (id: string): Promise<UserModel> => {
-        return this.userModel.destroy({ where: { id } }).then(handleDaoError('User not found'));
-    };
+    public delete(id: string): Promise<UserModel> {
+        return this.userRepository.delete(id);
+    }
 }

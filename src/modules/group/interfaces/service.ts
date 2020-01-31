@@ -1,4 +1,4 @@
-import { GroupModel } from "../model";
+import { GroupModel } from '../model';
 
 export interface GroupService {
     select(nameSubstring: string, count?: string): Promise<GroupModel[]>;

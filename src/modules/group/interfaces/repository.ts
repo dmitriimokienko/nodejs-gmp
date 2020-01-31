@@ -1,4 +1,4 @@
-import {GroupDTO, GroupModel} from "../model";
+import { GroupDTO, GroupModel } from '../model';
 
 export interface GroupRepository {
     select(options: Object): Promise<GroupModel[]>;
