@@ -4,7 +4,7 @@ import { TYPES } from '../../../types';
 import { GroupRepository, GroupService } from '../interfaces';
 import { GroupModel, GroupDTO } from '../model';
 import { createSequelizeFindOptions } from '../../../utils';
-import { Permission } from '../permission';
+import { Permission } from '../constants';
 
 @injectable()
 export class GroupServiceImpl implements GroupService {

@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid/v4';
-import { Permission } from '../permission';
+import { Permission } from '../constants';
 
 export class GroupDTO {
     public readonly id?: string;

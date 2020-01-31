@@ -1,1 +1,1 @@
-export { initializeGroupTable } from './initialize-table';
+export { initializeGroupTable } from './utils';

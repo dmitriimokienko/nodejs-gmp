@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import Boom from '@hapi/boom';
 import { GroupModel, GroupDTO } from '../model';
 import { handleDaoError } from '../../../utils';
-import { Permission } from '../permission';
+import { Permission } from '../constants';
 import { GroupRepository } from '../interfaces';
 
 @injectable()

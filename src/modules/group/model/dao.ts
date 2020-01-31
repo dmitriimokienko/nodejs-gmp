@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../../../resources';
-import { Permission } from '../permission';
+import { Permission } from '../constants';
 
 const attributes = {
     id: {
