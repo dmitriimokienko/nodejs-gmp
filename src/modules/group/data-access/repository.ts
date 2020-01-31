@@ -1,14 +1,13 @@
 import { injectable } from 'inversify';
 import 'reflect-metadata';
 import Boom from '@hapi/boom';
-import { GroupModel } from '../model';
+import { GroupModel, GroupDTO } from '../model';
 import { handleDaoError } from '../../../utils';
-import { GroupDTO } from '../dto';
 import { Permission } from '../permission';
 import { GroupRepository } from '../interfaces';
 
 @injectable()
-export class GroupRepositoryImplPostgresql implements GroupRepository {
+export class GroupRepositoryImplPostgres implements GroupRepository {
     public select(options: Object): Promise<GroupModel[]> {
         return GroupModel.findAll(options);
     }

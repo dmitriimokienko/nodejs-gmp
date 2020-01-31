@@ -1,18 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
-import { GroupModel } from './model';
-import { GroupDTO } from './dto';
-
-export interface Controller {
-    get(req: Request, res: Response, next: NextFunction): Promise<void>;
-
-    getById(req: Request, res: Response, next: NextFunction): Promise<void>;
-
-    create(req: Request, res: Response, next: NextFunction): Promise<void>;
-
-    update(req: Request, res: Response, next: NextFunction): Promise<void>;
-
-    delete(req: Request, res: Response, next: NextFunction): Promise<void>;
-}
+import { GroupModel, GroupDTO } from './model';
 
 export interface GroupService {
     select(nameSubstring: string, count?: string): Promise<GroupModel[]>;

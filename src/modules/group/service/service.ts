@@ -2,9 +2,8 @@ import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../../../types';
 import { GroupRepository, GroupService } from '../interfaces';
-import { GroupModel } from '../model';
+import { GroupModel, GroupDTO } from '../model';
 import { createSequelizeFindOptions } from '../../../utils';
-import { GroupDTO } from '../dto';
 import { Permission } from '../permission';
 
 @injectable()

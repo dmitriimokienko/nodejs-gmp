@@ -1,5 +1,5 @@
 export const TYPES = {
-    GroupController: Symbol('GroupController'),
+    Controller: Symbol('Controller'),
     GroupService: Symbol('GroupService'),
     GroupRepository: Symbol('GroupRepository')
 };

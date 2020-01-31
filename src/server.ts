@@ -2,15 +2,22 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import { config } from './config';
 import { userRouter, initializeUserTable } from './modules/user';
-import { groupRouter, initializeGroupTable } from './modules/group';
+import { initializeGroupTable } from './modules/group';
 import { sequelize } from '../resources';
 import { httpError } from './middlewares';
+import { RegistrableController } from './interfaces';
+import container from './inversify.config';
+import { TYPES } from './types';
 
 export const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/api', [userRouter, groupRouter]);
+app.use('/api', [userRouter]);
+
+const controllers: RegistrableController[] = container.getAll<RegistrableController>(TYPES.Controller);
+controllers.forEach(controller => controller.register(app));
+
 app.use(httpError());
 
 sequelize

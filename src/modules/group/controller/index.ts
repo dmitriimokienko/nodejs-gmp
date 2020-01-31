@@ -1,1 +1,1 @@
-export { groupRouter } from './routes';
+export { GroupController } from './controller';
