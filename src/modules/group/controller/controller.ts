@@ -61,7 +61,7 @@ export class GroupController implements RegistrableController {
 
             const group: GroupModel = await this.service.create({ name, permissions });
 
-            res.json(group);
+            res.status(201).json(group);
         } catch (e) {
             next(e);
         }

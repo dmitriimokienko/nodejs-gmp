@@ -62,7 +62,7 @@ export class UserController implements RegistrableController {
 
             const user: UserModel = await this.service.create({ login, password, age });
 
-            res.json(user);
+            res.status(201).json(user);
         } catch (e) {
             next(e);
         }
