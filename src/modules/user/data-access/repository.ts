@@ -16,11 +16,9 @@ export class UserRepositoryImplDb implements UserRepository {
         return UserModel.findByPk(id).then(handleDaoError('User not found'));
     }
 
-    public async create({ login, password, age }: UserDTO): Promise<UserModel> {
-        const dto: UserDTO = new UserDTO(login, password, age);
-
+    public async create(dto: UserDTO): Promise<UserModel> {
         const [user, created]: [UserModel, boolean] = await UserModel.findOrCreate({
-            where: { login },
+            where: { login: dto.login },
             defaults: dto
         });
 

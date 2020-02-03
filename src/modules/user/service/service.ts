@@ -16,7 +16,6 @@ export class UserServiceImpl implements UserService {
 
     public select(loginSubstring?: string, limit?: string): Promise<UserModel[]> {
         const options = createSequelizeFindOptions({ login: loginSubstring }, limit);
-
         return this.userRepository.select(options);
     }
 
@@ -26,7 +25,6 @@ export class UserServiceImpl implements UserService {
 
     public async create({ login, password, age }: UserDTO): Promise<UserModel> {
         const dto: UserDTO = new UserDTO(login, password, age);
-
         return this.userRepository.create(dto);
     }
 

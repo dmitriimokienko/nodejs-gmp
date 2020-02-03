@@ -16,7 +16,6 @@ export class GroupServiceImpl implements GroupService {
 
     public select(nameSubstring?: string, limit?: string): Promise<GroupModel[]> {
         const options = createSequelizeFindOptions({ name: nameSubstring }, limit);
-
         return this.groupRepository.select(options);
     }
 
@@ -26,7 +25,6 @@ export class GroupServiceImpl implements GroupService {
 
     public async create({ name, permissions }: GroupDTO): Promise<GroupModel> {
         const dto: GroupDTO = new GroupDTO(name, permissions);
-
         return this.groupRepository.create(dto);
     }
 
