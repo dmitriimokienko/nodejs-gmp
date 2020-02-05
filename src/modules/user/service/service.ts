@@ -1,5 +1,4 @@
 import { injectable, inject } from 'inversify';
-import 'reflect-metadata';
 import { TYPES } from '../../../types';
 import { UserRepository, UserService } from '../interfaces';
 import { UserModel, UserDTO } from '../model';

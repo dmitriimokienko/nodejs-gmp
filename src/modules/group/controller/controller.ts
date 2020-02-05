@@ -1,5 +1,4 @@
 import { injectable, inject } from 'inversify';
-import 'reflect-metadata';
 import { Request, Response, NextFunction, Application } from 'express';
 import { get } from 'lodash';
 import { TYPES } from '../../../types';

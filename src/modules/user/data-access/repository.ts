@@ -1,6 +1,5 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
 import Boom from '@hapi/boom';
+import { injectable } from 'inversify';
 import { UserModel, UserDTO } from '../model';
 import { UserRepository } from '../interfaces';
 import { UserUpdateType } from '../types';

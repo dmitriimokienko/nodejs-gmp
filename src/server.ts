@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import 'reflect-metadata';
 import cors from 'cors';
 import container from './inversify.config';
 import { sequelize } from '../resources';

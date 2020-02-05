@@ -37,12 +37,8 @@ const options = {
 
 export class UserGroupModel extends Model<UserGroupModel> {
     public readonly id?: string;
-    public readonly userId!: string;
     public readonly groupId!: string;
+    public readonly userId!: string;
 }
 
 UserGroupModel.init(attributes, options);
-
-// TODO: may be relocate to another places
-UserModel.belongsToMany(GroupModel, { through: UserGroupModel });
-GroupModel.belongsToMany(UserModel, { through: UserGroupModel });

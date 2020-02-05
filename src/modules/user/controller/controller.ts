@@ -1,6 +1,4 @@
 import { injectable, inject } from 'inversify';
-// TODO: use once
-import 'reflect-metadata';
 import { Request, Response, NextFunction, Application } from 'express';
 import { get } from 'lodash';
 import { TYPES } from '../../../types';

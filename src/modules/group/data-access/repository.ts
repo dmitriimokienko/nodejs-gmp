@@ -1,5 +1,4 @@
 import { injectable } from 'inversify';
-import 'reflect-metadata';
 import Boom from '@hapi/boom';
 import { GroupModel, GroupDTO } from '../model';
 import { handleDaoError } from '../../../utils';
