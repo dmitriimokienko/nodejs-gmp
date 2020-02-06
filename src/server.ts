@@ -5,7 +5,7 @@ import container from './inversify.config';
 import { sequelize } from '../resources';
 import { config } from './config';
 import { TYPES } from './types';
-import { httpError } from './middlewares';
+import {httpError, notFound} from './middlewares';
 import { RegistrableController } from './interfaces';
 import { initializeUserTable } from './modules/user';
 import { initializeGroupTable } from './modules/group';
@@ -18,7 +18,8 @@ app.use(express.json());
 const controllers: RegistrableController[] = container.getAll<RegistrableController>(TYPES.Controller);
 controllers.forEach(controller => controller.register(app));
 
-app.use(httpError());
+app.use('/', notFound);
+app.use(httpError);
 
 sequelize
     .sync({ force: true })
