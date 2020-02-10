@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../../../resources';
 import { Permission } from '../constants';
+import { UserModel } from '../../user/model';
 
 const attributes = {
     id: {
@@ -27,6 +28,9 @@ export class GroupModel extends Model<GroupModel> {
     public readonly id?: string;
     public name!: string;
     public permissions!: Permission[];
+
+    public getUsers!: () => UserModel[];
+    public addUser!: (user: UserModel, options: Object) => void;
 }
 
 GroupModel.init(attributes, options);

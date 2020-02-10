@@ -1,4 +1,6 @@
 import { injectable } from 'inversify';
+import { Transaction } from 'sequelize';
+import { find } from 'lodash';
 import Boom from '@hapi/boom';
 import { GroupModel, GroupDTO } from '../model';
 import { handleDaoError } from '../../../utils';
@@ -44,20 +46,36 @@ export class GroupRepositoryImplDb implements GroupRepository {
         return GroupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
     }
 
-    // todo: fix ts
-    public async addUsersToGroup(id: string, userIds: string[]): Promise<any> {
+    public async addUsersToGroup(id: string, userIds: string[]): Promise<void> {
         try {
-            sequelize.transaction(async transaction => {
+            return sequelize.transaction(async (transaction: Transaction) => {
                 const group = await GroupModel.findByPk(id, { transaction });
-                const users = await Promise.all(
-                    userIds.map(async (userId: string) => await UserModel.findByPk(userId, { transaction }))
-                );
 
-                // @ts-ignore
-                await group.addUser(users, { transaction });
+                if (!group) {
+                    throw Boom.badRequest(`Group not found`);
+                }
+
+                await Promise.all(
+                    userIds.map(async (userId: string) => {
+                        const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
+
+                        if (!user) {
+                            throw Boom.badRequest(`User not found`);
+                        }
+
+                        const users: UserModel[] = await group.getUsers();
+                        const hasUser: boolean = Boolean(find(users, ({ id }: UserModel) => id === user.id));
+
+                        if (hasUser) {
+                            throw Boom.badRequest(`${group.name} already contains ${user.login}`);
+                        }
+
+                        await group.addUser(user, { transaction });
+                    })
+                );
             });
         } catch (e) {
-            handleDaoError(e);
+            throw Boom.badRequest(e);
         }
     }
 }
