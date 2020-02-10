@@ -18,8 +18,12 @@ const attributes = {
             key: 'id'
         }
     },
-    userIds: {
-        type: DataTypes.ARRAY(DataTypes.UUID)
+    userId: {
+        type: DataTypes.UUID,
+        references: {
+            model: UserModel,
+            key: 'id'
+        }
     }
 };
 
@@ -32,7 +36,7 @@ const options = {
 export class UserGroupModel extends Model<UserGroupModel> {
     public readonly id?: string;
     public readonly groupId!: string;
-    public readonly userIds!: string[];
+    public readonly userId!: string;
 }
 
 UserGroupModel.init(attributes, options);
