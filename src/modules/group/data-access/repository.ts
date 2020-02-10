@@ -4,6 +4,8 @@ import { GroupModel, GroupDTO } from '../model';
 import { handleDaoError } from '../../../utils';
 import { Permission } from '../constants';
 import { GroupRepository } from '../interfaces';
+import { sequelize } from '../../../../resources';
+import { UserModel } from '../../user/model';
 
 @injectable()
 export class GroupRepositoryImplDb implements GroupRepository {
@@ -11,9 +13,9 @@ export class GroupRepositoryImplDb implements GroupRepository {
         return GroupModel.findAll(options);
     }
 
-    public getById = (id: string): Promise<GroupModel> => {
+    public getById(id: string): Promise<GroupModel> {
         return GroupModel.findByPk(id).then(handleDaoError('Group not found'));
-    };
+    }
 
     public async create(dto: GroupDTO): Promise<GroupModel> {
         const [group, created]: [GroupModel, boolean] = await GroupModel.findOrCreate({
@@ -40,5 +42,22 @@ export class GroupRepositoryImplDb implements GroupRepository {
 
     public delete(id: string): Promise<GroupModel> {
         return GroupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
+    }
+
+    // todo: fix ts
+    public async addUsersToGroup(id: string, userIds: string[]): Promise<any> {
+        try {
+            sequelize.transaction(async transaction => {
+                const group = await GroupModel.findByPk(id, { transaction });
+                const users = await Promise.all(
+                    userIds.map(async (userId: string) => await UserModel.findByPk(userId, { transaction }))
+                );
+
+                // @ts-ignore
+                await group.addUser(users, { transaction });
+            });
+        } catch (e) {
+            handleDaoError(e);
+        }
     }
 }

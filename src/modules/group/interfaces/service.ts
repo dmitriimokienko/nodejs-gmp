@@ -10,4 +10,7 @@ export interface GroupService {
     update(id: string, body: any): Promise<GroupModel>;
 
     delete(id: string): Promise<GroupModel>;
+
+    // TODO: fix return type
+    addUsersToGroup(id: string, userIds: string[]): Promise<any>;
 }

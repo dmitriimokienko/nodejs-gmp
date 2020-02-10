@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../../../resources';
-import { UserModel } from '../../user/model';
 import { GroupModel } from '../../group/model';
+import { UserModel } from '../../user/model';
 
 const attributes = {
     id: {
@@ -11,21 +11,15 @@ const attributes = {
         allowNull: false,
         unique: true
     },
-    userId: {
-        type: DataTypes.UUID,
-        validate: { isUUID: 4 },
-        references: {
-            model: UserModel,
-            key: 'id'
-        }
-    },
     groupId: {
         type: DataTypes.UUID,
-        validate: { isUUID: 4 },
         references: {
             model: GroupModel,
             key: 'id'
         }
+    },
+    userIds: {
+        type: DataTypes.ARRAY(DataTypes.UUID)
     }
 };
 
@@ -38,7 +32,10 @@ const options = {
 export class UserGroupModel extends Model<UserGroupModel> {
     public readonly id?: string;
     public readonly groupId!: string;
-    public readonly userId!: string;
+    public readonly userIds!: string[];
 }
 
 UserGroupModel.init(attributes, options);
+
+UserModel.belongsToMany(GroupModel, { through: UserGroupModel });
+GroupModel.belongsToMany(UserModel, { through: UserGroupModel });

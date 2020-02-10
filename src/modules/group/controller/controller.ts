@@ -16,15 +16,19 @@ export class GroupController implements RegistrableController {
     }
 
     public register(app: Application): void {
-        app.route('/api/groups')
-            .get(this.get)
-            .post(validateSchema(groupValidation), this.create)
+        app.route('/api/groups/:id/users')
+            .put(this.addUsersToGroup)
             .all(methodNotAllowed);
 
         app.route('/api/groups/:id')
             .get(this.getById)
             .put(validateSchema(groupUpdateValidation), this.update)
             .delete(this.delete)
+            .all(methodNotAllowed);
+
+        app.route('/api/groups')
+            .get(this.get)
+            .post(validateSchema(groupValidation), this.create)
             .all(methodNotAllowed);
     }
 
@@ -84,6 +88,19 @@ export class GroupController implements RegistrableController {
             const id = get(req, 'params.id');
 
             const group: GroupModel = await this.service.delete(id);
+
+            res.json(group);
+        } catch (e) {
+            next(e);
+        }
+    };
+
+    private addUsersToGroup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const id = get(req, 'params.id');
+            const userIds = get(req, 'body.userIds', []);
+
+            const group: GroupModel = await this.service.addUsersToGroup(id, userIds);
 
             res.json(group);
         } catch (e) {
