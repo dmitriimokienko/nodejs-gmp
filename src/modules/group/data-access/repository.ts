@@ -49,7 +49,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
     public async addUsersToGroup(id: string, userIds: string[]): Promise<void> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
-                const group = await GroupModel.findByPk(id, { transaction });
+                const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
                     throw Boom.badRequest(`Group not found`);
