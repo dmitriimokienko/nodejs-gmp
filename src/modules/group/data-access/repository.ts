@@ -1,6 +1,5 @@
 import { injectable } from 'inversify';
 import { Transaction } from 'sequelize';
-import { find } from 'lodash';
 import Boom from '@hapi/boom';
 import { GroupModel, GroupDTO } from '../model';
 import { handleDaoError } from '../../../utils';
@@ -55,7 +54,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                     throw Boom.badRequest(`Group not found`);
                 }
 
-                return await Promise.all(
+                const users: UserModel[] = await Promise.all(
                     userIds.map(async (userId: string) => {
                         const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
 
@@ -63,16 +62,18 @@ export class GroupRepositoryImplDb implements GroupRepository {
                             throw Boom.badRequest(`User not found`);
                         }
 
-                        const users: UserModel[] = await group.getUsers();
-                        const hasUser: boolean = Boolean(find(users, ({ id }: UserModel) => id === user.id));
+                        const usersInGroup: UserModel[] = await group.getUsers();
+                        const hasUser: boolean = usersInGroup.some(({ id }: UserModel) => id === user.id);
 
                         if (hasUser) {
                             throw Boom.badRequest(`${group.name} already contains ${user.login}`);
                         }
 
-                        return group.addUser(user, {transaction});
+                        return user;
                     })
                 );
+
+                return group.addUser(users, { transaction });
             });
         } catch (e) {
             throw Boom.badRequest(e);
