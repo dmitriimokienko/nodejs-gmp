@@ -46,7 +46,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         return GroupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
     }
 
-    public async addUsersToGroup(id: string, userIds: string[]): Promise<void> {
+    public async addUsersToGroup(id: string, userIds: string[]): Promise<any> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
@@ -55,7 +55,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                     throw Boom.badRequest(`Group not found`);
                 }
 
-                await Promise.all(
+                return await Promise.all(
                     userIds.map(async (userId: string) => {
                         const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
 
@@ -70,7 +70,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                             throw Boom.badRequest(`${group.name} already contains ${user.login}`);
                         }
 
-                        await group.addUser(user, { transaction });
+                        return group.addUser(user, {transaction});
                     })
                 );
             });

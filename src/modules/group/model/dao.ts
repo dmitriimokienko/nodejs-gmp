@@ -22,7 +22,7 @@ const attributes = {
     }
 };
 
-const options = { sequelize, modelName: 'Group', tableName: 'Groups' };
+const options = { sequelize, modelName: 'group', tableName: 'groups' };
 
 export class GroupModel extends Model<GroupModel> {
     public readonly id?: string;

@@ -27,8 +27,8 @@ const attributes = {
 
 const options = {
     sequelize,
-    modelName: 'User',
-    tableName: 'Users',
+    modelName: 'user',
+    tableName: 'users',
     paranoid: true
 };
 
