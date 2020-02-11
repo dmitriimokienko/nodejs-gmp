@@ -6,6 +6,7 @@ import { RegistrableController } from '../../../interfaces';
 import { GroupService } from '../interfaces';
 import { GroupModel, groupUpdateValidation, groupValidation } from '../model';
 import { methodNotAllowed, validateSchema } from '../../../middlewares';
+import { UserGroupModel } from '../../user-group/model';
 
 @injectable()
 export class GroupController implements RegistrableController {
@@ -100,9 +101,9 @@ export class GroupController implements RegistrableController {
             const id = get(req, 'params.id');
             const userIds = get(req, 'body.userIds', []);
 
-            const group: GroupModel = await this.service.addUsersToGroup(id, userIds);
+            const usersGroups: UserGroupModel[] = await this.service.addUsersToGroup(id, userIds);
 
-            res.json(group);
+            res.json(usersGroups);
         } catch (e) {
             next(e);
         }

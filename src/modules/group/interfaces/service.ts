@@ -1,4 +1,5 @@
 import { GroupModel } from '../model';
+import { UserGroupModel } from '../../user-group/model';
 
 export interface GroupService {
     select(nameSubstring: string, count?: string): Promise<GroupModel[]>;
@@ -11,6 +12,5 @@ export interface GroupService {
 
     delete(id: string): Promise<GroupModel>;
 
-    // TODO: fix return type
-    addUsersToGroup(id: string, userIds: string[]): Promise<any>;
+    addUsersToGroup(id: string, userIds: string[]): Promise<UserGroupModel[]>;
 }

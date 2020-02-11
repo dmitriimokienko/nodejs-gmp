@@ -1,5 +1,5 @@
 import { GroupDTO, GroupModel } from '../model';
-import {UserGroupModel} from "../../user-group/model";
+import { UserGroupModel } from '../../user-group/model';
 
 export interface GroupRepository {
     select(options: Object): Promise<GroupModel[]>;
