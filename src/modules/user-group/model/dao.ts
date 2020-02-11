@@ -41,5 +41,5 @@ export class UserGroupModel extends Model<UserGroupModel> {
 
 UserGroupModel.init(attributes, options);
 
-UserModel.belongsToMany(GroupModel, { through: UserGroupModel });
-GroupModel.belongsToMany(UserModel, { through: UserGroupModel });
+UserModel.belongsToMany(GroupModel, { through: UserGroupModel, foreignKey: 'userId', onDelete: 'cascade' });
+GroupModel.belongsToMany(UserModel, { through: UserGroupModel, foreignKey: 'groupId', onDelete: 'cascade' });
