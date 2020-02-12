@@ -2,6 +2,8 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../../../resources';
 import { Permission } from '../constants';
 import { UserModel } from '../../user/model';
+import { UserGroupModel } from '../../user-group/model';
+import { UsersFromGroup } from '../types';
 
 const attributes = {
     id: {
@@ -29,8 +31,8 @@ export class GroupModel extends Model<GroupModel> {
     public name!: string;
     public permissions!: Permission[];
 
-    public getUsers!: () => UserModel[];
-    public addUser!: (users: UserModel[] | UserModel, options: Object) => void;
+    public getUsers!: () => UsersFromGroup[];
+    public addUser!: (users: UserModel[] | UserModel, options: Object) => UserGroupModel[];
 }
 
 GroupModel.init(attributes, options);

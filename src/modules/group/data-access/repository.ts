@@ -8,6 +8,7 @@ import { GroupRepository } from '../interfaces';
 import { sequelize } from '../../../../resources';
 import { UserModel } from '../../user/model';
 import { UsersFromGroup } from '../types';
+import { UserGroupModel } from '../../user-group/model';
 
 @injectable()
 export class GroupRepositoryImplDb implements GroupRepository {
@@ -62,7 +63,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         }
     }
 
-    public async addUsersToGroup(id: string, userIds: string[]): Promise<any> {
+    public async addUsersToGroup(id: string, userIds: string[]): Promise<UserGroupModel[]> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
@@ -79,19 +80,17 @@ export class GroupRepositoryImplDb implements GroupRepository {
                             throw Boom.badRequest('User not found');
                         }
 
-                        // todo: may be remove this check
-                        const usersInGroup: UserModel[] = await group.getUsers();
-                        const hasUser: boolean = usersInGroup.some(({ id }: UserModel) => id === user.id);
-
-                        if (hasUser) {
-                            throw Boom.badRequest(`${group.name} already contains ${user.login}`);
-                        }
-
                         return user;
                     })
                 );
 
-                return group.addUser(users, { transaction });
+                const usersGroups: UserGroupModel[] | undefined = await group.addUser(users, { transaction });
+
+                if (!usersGroups) {
+                    throw Boom.badRequest(`${group.name} already contains this user/users`);
+                }
+
+                return usersGroups;
             });
         } catch (e) {
             throw Boom.badRequest(e);
