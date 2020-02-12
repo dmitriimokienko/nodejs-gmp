@@ -7,6 +7,7 @@ import { GroupService } from '../interfaces';
 import { GroupModel, groupUpdateValidation, groupValidation } from '../model';
 import { methodNotAllowed, validateSchema } from '../../../middlewares';
 import { UserGroupModel } from '../../user-group/model';
+import { UsersFromGroup } from '../types';
 
 @injectable()
 export class GroupController implements RegistrableController {
@@ -18,6 +19,7 @@ export class GroupController implements RegistrableController {
 
     public register(app: Application): void {
         app.route('/api/groups/:id/users')
+            .get(this.getUsers)
             .put(this.addUsersToGroup)
             .all(methodNotAllowed);
 
@@ -91,6 +93,18 @@ export class GroupController implements RegistrableController {
             const group: GroupModel = await this.service.delete(id);
 
             res.json(group);
+        } catch (e) {
+            next(e);
+        }
+    };
+
+    private getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const id = get(req, 'params.id');
+
+            const users: UsersFromGroup[] = await this.service.getUsers(id);
+
+            res.json(users);
         } catch (e) {
             next(e);
         }

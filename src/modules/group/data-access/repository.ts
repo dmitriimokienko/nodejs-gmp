@@ -7,6 +7,7 @@ import { Permission } from '../constants';
 import { GroupRepository } from '../interfaces';
 import { sequelize } from '../../../../resources';
 import { UserModel } from '../../user/model';
+import { UsersFromGroup } from '../types';
 
 @injectable()
 export class GroupRepositoryImplDb implements GroupRepository {
@@ -45,13 +46,29 @@ export class GroupRepositoryImplDb implements GroupRepository {
         return GroupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
     }
 
+    public getUsers(id: string): Promise<UsersFromGroup[]> {
+        try {
+            return sequelize.transaction(async (transaction: Transaction) => {
+                const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
+
+                if (!group) {
+                    throw Boom.badRequest('Group not found');
+                }
+
+                return group.getUsers();
+            });
+        } catch (e) {
+            throw Boom.badRequest(e);
+        }
+    }
+
     public async addUsersToGroup(id: string, userIds: string[]): Promise<any> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
-                    throw Boom.badRequest(`Group not found`);
+                    throw Boom.badRequest('Group not found');
                 }
 
                 const users: UserModel[] = await Promise.all(
@@ -59,9 +76,10 @@ export class GroupRepositoryImplDb implements GroupRepository {
                         const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
 
                         if (!user) {
-                            throw Boom.badRequest(`User not found`);
+                            throw Boom.badRequest('User not found');
                         }
 
+                        // todo: may be remove this check
                         const usersInGroup: UserModel[] = await group.getUsers();
                         const hasUser: boolean = usersInGroup.some(({ id }: UserModel) => id === user.id);
 

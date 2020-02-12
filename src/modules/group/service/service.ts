@@ -5,6 +5,7 @@ import { GroupModel, GroupDTO } from '../model';
 import { createSequelizeFindOptions } from '../../../utils';
 import { Permission } from '../constants';
 import { UserGroupModel } from '../../user-group/model';
+import { UsersFromGroup } from '../types';
 
 @injectable()
 export class GroupServiceImpl implements GroupService {
@@ -34,6 +35,10 @@ export class GroupServiceImpl implements GroupService {
 
     public delete(id: string): Promise<GroupModel> {
         return this.groupRepository.delete(id);
+    }
+
+    public getUsers(id: string): Promise<UsersFromGroup[]> {
+        return this.groupRepository.getUsers(id);
     }
 
     public addUsersToGroup(id: string, userIds: string[]): Promise<UserGroupModel[]> {

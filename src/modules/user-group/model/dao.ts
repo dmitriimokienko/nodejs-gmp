@@ -29,8 +29,8 @@ const attributes = {
 
 const options = {
     sequelize,
-    modelName: 'UserGroup',
-    tableName: 'UsersGroups'
+    modelName: 'userGroup',
+    tableName: 'usersGroups'
 };
 
 export class UserGroupModel extends Model<UserGroupModel> {
