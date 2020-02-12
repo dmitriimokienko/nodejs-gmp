@@ -47,7 +47,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         return GroupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
     }
 
-    public getUsers(id: string): Promise<UsersFromGroup[]> {
+    public async getUsers(id: string): Promise<UsersFromGroup[]> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
