@@ -22,7 +22,7 @@ export class UserRepositoryImplDb implements UserRepository {
         });
 
         if (!created) {
-            throw Boom.badRequest('This login already in use');
+            throw Boom.conflict('This login already in use');
         }
 
         return user;

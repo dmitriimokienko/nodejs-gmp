@@ -27,7 +27,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         });
 
         if (!created) {
-            throw Boom.badRequest('This name already in use');
+            throw Boom.conflict('This name already in use');
         }
 
         return group;
@@ -53,7 +53,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
-                    throw Boom.badRequest('Group not found');
+                    throw Boom.notFound('Group not found');
                 }
 
                 return group.getUsers();
@@ -69,7 +69,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
-                    throw Boom.badRequest('Group not found');
+                    throw Boom.notFound('Group not found');
                 }
 
                 const users: UserModel[] = await Promise.all(
@@ -77,7 +77,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                         const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
 
                         if (!user) {
-                            throw Boom.badRequest('User not found');
+                            throw Boom.notFound('User not found');
                         }
 
                         return user;
@@ -87,7 +87,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const usersGroups: UserGroupModel[] | undefined = await group.addUser(users, { transaction });
 
                 if (!usersGroups) {
-                    throw Boom.badRequest(`${group.name} already contains this user/users`);
+                    throw Boom.conflict(`${group.name} already contains this user/users`);
                 }
 
                 return usersGroups;
