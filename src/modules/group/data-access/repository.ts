@@ -17,7 +17,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
     }
 
     public getById(id: string): Promise<GroupModel> {
-        return GroupModel.findByPk(id).then(handleDaoError('Group not found'));
+        return GroupModel.findByPk(id).then(handleDaoError(`getById(${id}) - Group not found`));
     }
 
     public async create(dto: GroupDTO): Promise<GroupModel> {
@@ -27,7 +27,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         });
 
         if (!created) {
-            const err = Boom.conflict('This name already in use');
+            const err = Boom.conflict(`create(${dto}) - This name already in use`);
 
             logger.error(err);
             throw err;
@@ -38,7 +38,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
 
     public update(id: string, permissions: Permission[]): Promise<GroupModel> {
         return GroupModel.findByPk(id)
-            .then(handleDaoError('Group not found'))
+            .then(handleDaoError(`update(${id}, ${permissions}) - Group not found`))
             .then((instance: GroupModel) => {
                 instance.permissions = permissions || instance.permissions;
                 instance.save();
@@ -47,7 +47,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
     }
 
     public delete(id: string): Promise<GroupModel> {
-        return GroupModel.destroy({ where: { id } }).then(handleDaoError('Group not found'));
+        return GroupModel.destroy({ where: { id } }).then(handleDaoError(`delete(${id}) - Group not found`));
     }
 
     public async getUsers(id: string): Promise<UsersFromGroup[]> {
@@ -56,7 +56,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
-                    const err = Boom.notFound('Group not found');
+                    const err = Boom.notFound(`getUsers(${id}) - Group not found`);
 
                     logger.error(err);
                     throw err;
@@ -76,7 +76,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
-                    const err = Boom.notFound('Group not found');
+                    const err = Boom.notFound(`addUsersToGroup(${id}, ${userIds}) - Group not found`);
 
                     logger.error(err);
                     throw err;
@@ -87,7 +87,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                         const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
 
                         if (!user) {
-                            const err = Boom.notFound('User not found');
+                            const err = Boom.notFound(`addUsersToGroup(${id}, ${userIds}) - User not found`);
 
                             logger.error(err);
                             throw err;
@@ -100,7 +100,9 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const usersGroups: UserGroupModel[] | undefined = await group.addUser(users, { transaction });
 
                 if (!usersGroups) {
-                    const err = Boom.conflict(`${group.name} already contains this user/users`);
+                    const err = Boom.conflict(
+                        `addUsersToGroup(${id}, ${userIds}) - ${group.name} already contains this user/users`
+                    );
 
                     logger.error(err);
                     throw err;

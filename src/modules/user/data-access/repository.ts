@@ -12,7 +12,7 @@ export class UserRepositoryImplDb implements UserRepository {
     }
 
     public getById(id: string): Promise<UserModel> {
-        return UserModel.findByPk(id).then(handleDaoError('User not found'));
+        return UserModel.findByPk(id).then(handleDaoError(`getById(${id}) - User not found`));
     }
 
     public async create(dto: UserDTO): Promise<UserModel> {
@@ -22,7 +22,7 @@ export class UserRepositoryImplDb implements UserRepository {
         });
 
         if (!created) {
-            const err = Boom.conflict('This login already in use');
+            const err = Boom.conflict(`create(${dto}) - This login already in use`);
 
             logger.error(err);
             throw err;
@@ -31,9 +31,11 @@ export class UserRepositoryImplDb implements UserRepository {
         return user;
     }
 
-    public update(id: string, { password, age }: UserUpdateType): Promise<UserModel> {
+    public update(id: string, data: UserUpdateType): Promise<UserModel> {
+        const { password, age } = data;
+
         return UserModel.findByPk(id)
-            .then(handleDaoError('User not found'))
+            .then(handleDaoError(`update(${id}, ${data}) - User not found`))
             .then((instance: UserModel) => {
                 instance.password = password || instance.password;
                 instance.age = age || instance.age;
@@ -43,6 +45,6 @@ export class UserRepositoryImplDb implements UserRepository {
     }
 
     public delete(id: string): Promise<UserModel> {
-        return UserModel.destroy({ where: { id } }).then(handleDaoError('User not found'));
+        return UserModel.destroy({ where: { id } }).then(handleDaoError(`delete(${id}) - User not found`));
     }
 }

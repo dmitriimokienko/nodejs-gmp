@@ -1,36 +1,24 @@
 import express, { Application } from 'express';
 import 'reflect-metadata';
 import cors from 'cors';
-import container from './inversify.config';
 import { sequelize } from '../resources';
 import { config } from './config';
-import { TYPES } from './types';
 import { httpError, notFound } from './middlewares';
-import { RegistrableController } from './interfaces';
 import { initializeUserTable } from './modules/user';
 import { initializeGroupTable } from './modules/group';
 import { initializeUsersGroupsTable } from './modules/user-group';
 import { logger } from './utils';
+import { logUnhandledErrors, registerRouting } from './handlers';
 
 export const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
 
-const controllers: RegistrableController[] = container.getAll<RegistrableController>(TYPES.Controller);
-controllers.forEach(controller => controller.register(app));
-
+registerRouting(app);
 app.use('/', notFound);
 
-process
-    .on('unhandledRejection', (reason, promise) => {
-        logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
-    })
-    .on('uncaughtException', (error: Error) => {
-        logger.error(`Uncaught Exception thrown - ${error}`);
-        process.exit(1);
-    });
-
+logUnhandledErrors();
 app.use(httpError);
 
 sequelize

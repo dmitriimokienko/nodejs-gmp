@@ -8,7 +8,7 @@ export interface UserRepository {
 
     create(dto: UserDTO): Promise<UserModel>;
 
-    update(id: string, body: UserUpdateType): Promise<UserModel>;
+    update(id: string, data: UserUpdateType): Promise<UserModel>;
 
     delete(id: string): Promise<UserModel>;
 }
