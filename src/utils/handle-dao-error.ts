@@ -1,8 +1,15 @@
 import Boom from '@hapi/boom';
+import { logger } from './logger';
 
-export const handleDaoError = (message: string) => (entity: any) => {
+type Entity = any;
+
+export const handleDaoError = (message: string) => (entity: Entity): Entity => {
     if (!entity) {
-        throw Boom.notFound(message);
+        const err = Boom.notFound(message);
+
+        logger.error(err);
+        throw err;
     }
+
     return entity;
 };

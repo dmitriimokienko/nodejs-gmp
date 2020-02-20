@@ -3,11 +3,11 @@ import { injectable } from 'inversify';
 import { UserModel, UserDTO } from '../model';
 import { UserRepository } from '../interfaces';
 import { UserUpdateType } from '../types';
-import { handleDaoError } from '../../../utils';
+import { handleDaoError, logger } from '../../../utils';
 
 @injectable()
 export class UserRepositoryImplDb implements UserRepository {
-    public select(options: Object): Promise<UserModel[]> {
+    public select(options: Record<string, unknown>): Promise<UserModel[]> {
         return UserModel.findAll(options);
     }
 
@@ -22,7 +22,10 @@ export class UserRepositoryImplDb implements UserRepository {
         });
 
         if (!created) {
-            throw Boom.conflict('This login already in use');
+            const err = Boom.conflict('This login already in use');
+
+            logger.error(err);
+            throw err;
         }
 
         return user;

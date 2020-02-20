@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { Transaction } from 'sequelize';
 import Boom from '@hapi/boom';
 import { GroupModel, GroupDTO } from '../model';
-import { handleDaoError } from '../../../utils';
+import { handleDaoError, logger } from '../../../utils';
 import { Permission } from '../constants';
 import { GroupRepository } from '../interfaces';
 import { sequelize } from '../../../../resources';
@@ -12,7 +12,7 @@ import { UserGroupModel } from '../../user-group/model';
 
 @injectable()
 export class GroupRepositoryImplDb implements GroupRepository {
-    public select(options: Object): Promise<GroupModel[]> {
+    public select(options: Record<string, unknown>): Promise<GroupModel[]> {
         return GroupModel.findAll(options);
     }
 
@@ -27,7 +27,10 @@ export class GroupRepositoryImplDb implements GroupRepository {
         });
 
         if (!created) {
-            throw Boom.conflict('This name already in use');
+            const err = Boom.conflict('This name already in use');
+
+            logger.error(err);
+            throw err;
         }
 
         return group;
@@ -53,12 +56,16 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
-                    throw Boom.notFound('Group not found');
+                    const err = Boom.notFound('Group not found');
+
+                    logger.error(err);
+                    throw err;
                 }
 
                 return group.getUsers();
             });
         } catch (e) {
+            logger.error(e);
             throw Boom.badRequest(e);
         }
     }
@@ -69,7 +76,10 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
 
                 if (!group) {
-                    throw Boom.notFound('Group not found');
+                    const err = Boom.notFound('Group not found');
+
+                    logger.error(err);
+                    throw err;
                 }
 
                 const users: UserModel[] = await Promise.all(
@@ -77,7 +87,10 @@ export class GroupRepositoryImplDb implements GroupRepository {
                         const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
 
                         if (!user) {
-                            throw Boom.notFound('User not found');
+                            const err = Boom.notFound('User not found');
+
+                            logger.error(err);
+                            throw err;
                         }
 
                         return user;
@@ -87,12 +100,16 @@ export class GroupRepositoryImplDb implements GroupRepository {
                 const usersGroups: UserGroupModel[] | undefined = await group.addUser(users, { transaction });
 
                 if (!usersGroups) {
-                    throw Boom.conflict(`${group.name} already contains this user/users`);
+                    const err = Boom.conflict(`${group.name} already contains this user/users`);
+
+                    logger.error(err);
+                    throw err;
                 }
 
                 return usersGroups;
             });
         } catch (e) {
+            logger.error(e);
             throw Boom.badRequest(e);
         }
     }

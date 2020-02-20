@@ -8,6 +8,7 @@ import { GroupModel, groupUpdateValidation, groupValidation } from '../model';
 import { methodNotAllowed, validateSchema } from '../../../middlewares';
 import { UserGroupModel } from '../../user-group/model';
 import { UsersFromGroup } from '../types';
+import { logger } from '../../../utils';
 
 @injectable()
 export class GroupController implements RegistrableController {
@@ -44,7 +45,8 @@ export class GroupController implements RegistrableController {
 
             res.json(groups);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -56,7 +58,8 @@ export class GroupController implements RegistrableController {
 
             res.json(group);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -69,7 +72,8 @@ export class GroupController implements RegistrableController {
 
             res.status(201).json(group);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -82,7 +86,8 @@ export class GroupController implements RegistrableController {
 
             res.json(group);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -94,7 +99,8 @@ export class GroupController implements RegistrableController {
 
             res.json(group);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -106,7 +112,8 @@ export class GroupController implements RegistrableController {
 
             res.json(users);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -119,7 +126,8 @@ export class GroupController implements RegistrableController {
 
             res.status(201).json(usersGroups);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 }

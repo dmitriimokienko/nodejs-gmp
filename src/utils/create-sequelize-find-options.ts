@@ -3,10 +3,13 @@ import { prepareSearchSubstring } from './prepare-search-substring';
 import { prepareLimit } from './prepare-limit';
 
 type Search = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 };
 
-export const createSequelizeFindOptions = (search: Search, count?: string) => {
+type Options = Record<string, unknown>;
+
+export const createSequelizeFindOptions = (search: Search, count?: string): Options => {
     const key = Object.keys(search)[0];
 
     const substring = prepareSearchSubstring(search[key]);

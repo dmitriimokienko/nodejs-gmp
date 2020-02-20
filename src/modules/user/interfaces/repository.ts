@@ -2,7 +2,7 @@ import { UserDTO, UserModel } from '../model';
 import { UserUpdateType } from '../types';
 
 export interface UserRepository {
-    select(options: Object): Promise<UserModel[]>;
+    select(options: Record<string, unknown>): Promise<UserModel[]>;
 
     getById(id: string): Promise<UserModel>;
 

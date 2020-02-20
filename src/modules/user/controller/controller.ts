@@ -6,6 +6,7 @@ import { RegistrableController } from '../../../interfaces';
 import { UserService } from '../interfaces';
 import { UserModel, userValidation, userUpdateValidation } from '../model';
 import { methodNotAllowed, validateSchema } from '../../../middlewares';
+import { logger } from '../../../utils';
 
 @injectable()
 export class UserController implements RegistrableController {
@@ -37,7 +38,8 @@ export class UserController implements RegistrableController {
 
             res.json(users);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -49,7 +51,8 @@ export class UserController implements RegistrableController {
 
             res.json(user);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -63,7 +66,8 @@ export class UserController implements RegistrableController {
 
             res.status(201).json(user);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -77,7 +81,8 @@ export class UserController implements RegistrableController {
 
             res.json(user);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 
@@ -89,7 +94,8 @@ export class UserController implements RegistrableController {
 
             res.json(user);
         } catch (e) {
-            next(e);
+            logger.error(e);
+            return next(e);
         }
     };
 }

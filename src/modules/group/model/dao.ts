@@ -32,7 +32,7 @@ export class GroupModel extends Model<GroupModel> {
     public permissions!: Permission[];
 
     public getUsers!: () => UsersFromGroup[];
-    public addUser!: (users: UserModel[] | UserModel, options: Object) => UserGroupModel[];
+    public addUser!: (users: UserModel[] | UserModel, options: Record<string, unknown>) => UserGroupModel[];
 }
 
 GroupModel.init(attributes, options);

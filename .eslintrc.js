@@ -12,6 +12,9 @@ module.exports = {
     env: {
         es6: true
     },
+    globals: {
+        "process": "readonly",
+    },
     rules: {
         "no-debugger": 1,
         // Possible errors
