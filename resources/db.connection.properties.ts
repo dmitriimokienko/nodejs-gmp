@@ -1,21 +1,16 @@
+import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 
-enum Dialect {
-    POSTGRES = 'postgres'
-}
+dotenv.config();
 
-const database = {
-    name: 'sraricxe',
-    password: '1o2ITIVhV9sboiAg8Hjqb9ztUw7gpezH',
-    username: 'sraricxe',
-    dialect: Dialect.POSTGRES,
-    host: 'packy.db.elephantsql.com',
-    port: 5432
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Config = any;
 
-export const sequelize = new Sequelize(database.name, database.username, database.password, {
-    dialect: database.dialect,
-    host: database.host,
-    port: database.port,
+const { DB_NAME, DB_PASSWORD, DB_USERNAME, DB_DIALECT, DB_HOST, DB_PORT }: Config = process.env;
+
+export const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+    dialect: DB_DIALECT,
+    host: DB_HOST,
+    port: DB_PORT,
     define: { timestamps: false }
 });

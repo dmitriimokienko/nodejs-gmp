@@ -1,14 +1,16 @@
 import express, { Application } from 'express';
 import 'reflect-metadata';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import { sequelize } from '../resources';
-import { config } from './config';
 import { httpError, notFound } from './middlewares';
 import { initializeUserTable } from './modules/user';
 import { initializeGroupTable } from './modules/group';
 import { initializeUsersGroupsTable } from './modules/user-group';
 import { logger } from './utils';
 import { logUnhandledErrors, registerRouting } from './handlers';
+
+dotenv.config();
 
 export const app: Application = express();
 
@@ -27,8 +29,9 @@ sequelize
     .then(initializeGroupTable)
     .then(initializeUsersGroupsTable)
     .then(() => {
-        app.listen(config.port, () => {
-            logger.info(`Application running on http://${config.host}:${config.port}`);
+        const { HOST, PORT } = process.env;
+        app.listen(PORT, () => {
+            logger.info(`Application running on http://${HOST}:${PORT}`);
         });
     })
     .catch((error: Error) => {

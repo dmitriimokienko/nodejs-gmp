@@ -10,3 +10,16 @@
 2020-02-20T07:03:53.268Z [error]: Invalid Request
 2020-02-20T07:59:37.412Z [info]: Application running on http://localhost:8080
 2020-02-20T08:50:45.195Z [info]: Application running on http://localhost:8080
+2020-02-20T12:52:47.748Z [info]: Application running on http://localhost:8080
+2020-02-21T07:40:41.821Z [info]: Application running on http://localhost:8080
+2020-02-21T07:42:57.166Z [info]: Application running on http://localhost:8080
+2020-02-21T07:43:27.990Z [info]: Application running on http://undefined:undefined
+2020-02-21T07:43:44.848Z [info]: Application running on http://localhost:8080
+2020-02-21T07:44:59.264Z [info]: Application running on http://localhost:8080
+2020-02-21T07:45:18.286Z [info]: Application running on http://localhost:8080
+2020-02-21T07:47:03.516Z [info]: Application running on http://localhost:8080
+2020-02-21T07:55:09.310Z [info]: Application running on http://localhost:8080
+2020-02-21T07:55:18.030Z [error]: getById(b889f6ee-f86e-464a-867d-75cbed50dc91) - User not found
+2020-02-21T07:55:18.030Z [error]: getById(b889f6ee-f86e-464a-867d-75cbed50dc91) - User not found
+2020-02-21T07:55:18.030Z [error]: getById(b889f6ee-f86e-464a-867d-75cbed50dc91) - User not found
+2020-02-21T07:56:24.765Z [info]: Application running on http://localhost:8080
