@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { Transaction } from 'sequelize';
 import Boom from '@hapi/boom';
 import { GroupModel, GroupDTO } from '../model';
-import { handleDaoError, logger } from '../../../utils';
+import { handleDaoError, logger, trackExecutionTime } from '../../../utils';
 import { Permission } from '../constants';
 import { GroupRepository } from '../interfaces';
 import { sequelize } from '../../../../resources';
@@ -12,14 +12,17 @@ import { UserGroupModel } from '../../user-group/model';
 
 @injectable()
 export class GroupRepositoryImplDb implements GroupRepository {
+    @trackExecutionTime
     public select(options: Record<string, unknown>): Promise<GroupModel[]> {
         return GroupModel.findAll(options);
     }
 
+    @trackExecutionTime
     public getById(id: string): Promise<GroupModel> {
         return GroupModel.findByPk(id).then(handleDaoError(`getById(${id}) - Group not found`));
     }
 
+    @trackExecutionTime
     public async create(dto: GroupDTO): Promise<GroupModel> {
         const [group, created]: [GroupModel, boolean] = await GroupModel.findOrCreate({
             where: { name: dto.name },
@@ -36,6 +39,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         return group;
     }
 
+    @trackExecutionTime
     public update(id: string, permissions: Permission[]): Promise<GroupModel> {
         return GroupModel.findByPk(id)
             .then(handleDaoError(`update(${id}, ${permissions}) - Group not found`))
@@ -46,10 +50,12 @@ export class GroupRepositoryImplDb implements GroupRepository {
             });
     }
 
+    @trackExecutionTime
     public delete(id: string): Promise<GroupModel> {
         return GroupModel.destroy({ where: { id } }).then(handleDaoError(`delete(${id}) - Group not found`));
     }
 
+    @trackExecutionTime
     public async getUsers(id: string): Promise<UsersFromGroup[]> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
@@ -70,6 +76,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         }
     }
 
+    @trackExecutionTime
     public async addUsersToGroup(id: string, userIds: string[]): Promise<UserGroupModel[]> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
