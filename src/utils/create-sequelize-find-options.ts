@@ -3,7 +3,6 @@ import { prepareSearchSubstring } from './prepare-search-substring';
 import { prepareLimit } from './prepare-limit';
 
 type Search = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 };
 

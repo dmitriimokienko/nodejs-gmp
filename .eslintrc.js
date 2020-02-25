@@ -26,6 +26,9 @@ module.exports = {
             2,
             "always"
         ],
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/explicit-function-return-type": 0,
+        "@typescript-eslint/ban-ts-ignore": 1,
         "no-constant-condition": 2,
         "no-control-regex": 2,
         "no-dupe-args": 2,
@@ -267,7 +270,8 @@ module.exports = {
         "space-before-function-paren": [
             2,
             {
-                "anonymous": "always",
+                "asyncArrow": "always",
+                "anonymous": "never",
                 "named": "never"
             }
         ],

@@ -8,10 +8,10 @@ const calculateExecutionTime = (diff: number[]): number => (diff[0] * NS_PER_SEC
 export function trackExecutionTime(_target: any, propertyName: string, descriptor: TypedPropertyDescriptor<any>) {
     const method: Function | undefined = descriptor.value;
 
-    descriptor.value = async function() {
+    descriptor.value = async function trackTime(...args: any) {
         const time = process.hrtime();
 
-        const result = method && (await method.apply(this, arguments));
+        const result = method && (await method.apply(this, args));
 
         const diff = process.hrtime(time);
 
