@@ -21,3 +21,9 @@
 2020-02-26T13:48:33.557Z [error]: Invalid Request
 2020-02-26T13:50:53.707Z [error]: getUsers(b889f6ee-f86e-464a-867d-75cbed50dc98) - Group not found
 2020-02-26T13:58:11.665Z [error]: "login" is required. "password" is required
+2020-02-26T13:58:40.662Z [error]: "login" is required. "password" is required
+2020-02-26T13:58:51.246Z [error]: "login" is required. "password" is required
+2020-02-26T13:59:04.419Z [error]: "login" is required. "password" is required
+2020-02-26T13:59:09.537Z [error]: "login" is required. "password" is required
+2020-02-26T13:59:27.476Z [error]: "login" is required. "password" is required
+2020-02-26T13:59:33.178Z [error]: "password" with value "1" fails to match the required pattern: /(?=.*[A-Za-z])(?=.*\d)[0-9A-Za-z]{6,}/
