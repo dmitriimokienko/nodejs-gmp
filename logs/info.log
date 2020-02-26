@@ -30,3 +30,30 @@
 2020-02-25T07:40:27.494Z [info]: 'getById' method execute 415.500599 ms
 2020-02-25T07:42:06.051Z [info]: Application running on http://localhost:8080
 2020-02-25T07:43:12.618Z [info]: 'getById' method execute 63521.9808 ms
+2020-02-26T13:37:39.179Z [info]: Application running on http://localhost:8080
+2020-02-26T13:38:18.537Z [info]: 'get' method execute 461.982501 ms
+2020-02-26T13:38:21.927Z [info]: 'get' method execute 72.5941 ms
+2020-02-26T13:38:31.093Z [error]: Invalid Request
+2020-02-26T13:38:31.093Z [error]: Invalid Request
+2020-02-26T13:40:21.395Z [info]: Application running on http://localhost:8080
+2020-02-26T13:40:26.186Z [error]: Invalid Request
+2020-02-26T13:41:41.087Z [info]: Application running on http://localhost:8080
+2020-02-26T13:42:53.922Z [info]: Application running on http://localhost:8080
+2020-02-26T13:43:43.748Z [info]: Application running on http://localhost:8080
+2020-02-26T13:44:39.407Z [info]: Application running on http://localhost:8080
+2020-02-26T13:44:41.026Z [error]: Invalid Request
+2020-02-26T13:44:53.415Z [error]: invalid input syntax for uuid: "1"
+2020-02-26T13:45:50.470Z [info]: Application running on http://localhost:8080
+2020-02-26T13:45:52.218Z [error]: invalid input syntax for uuid: "1"
+2020-02-26T13:48:22.592Z [info]: Application running on http://localhost:8080
+2020-02-26T13:48:26.533Z [error]: invalid input syntax for uuid: "1"
+2020-02-26T13:48:33.557Z [error]: Invalid Request
+2020-02-26T13:49:06.256Z [info]: Application running on http://localhost:8080
+2020-02-26T13:50:01.513Z [info]: Application running on http://localhost:8080
+2020-02-26T13:50:33.902Z [info]: 'get' method execute 462.774599 ms
+2020-02-26T13:50:46.362Z [info]: 'getUsers' method execute 906.3946 ms
+2020-02-26T13:50:53.707Z [error]: getUsers(b889f6ee-f86e-464a-867d-75cbed50dc98) - Group not found
+2020-02-26T13:55:39.005Z [info]: Application running on http://localhost:8080
+2020-02-26T13:55:40.870Z [info]: 'get' method execute 86.761601 ms
+2020-02-26T13:58:00.426Z [info]: Application running on http://localhost:8080
+2020-02-26T13:58:11.665Z [error]: "login" is required. "password" is required

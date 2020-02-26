@@ -4,3 +4,4 @@ export { handleDaoError } from './handle-dao-error';
 export { createSequelizeFindOptions } from './create-sequelize-find-options';
 export { logger } from './logger';
 export { trackExecutionTime } from './track-execution-time';
+export { tryCatch } from './try-catch';

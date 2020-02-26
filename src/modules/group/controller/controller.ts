@@ -1,5 +1,6 @@
+import autoBind from 'auto-bind';
 import { injectable, inject } from 'inversify';
-import { Request, Response, NextFunction, Application } from 'express';
+import { Request, Response, Application } from 'express';
 import { get } from 'lodash';
 import { TYPES } from '../../../types';
 import { RegistrableController } from '../../../interfaces';
@@ -8,13 +9,14 @@ import { GroupModel, groupUpdateValidation, groupValidation } from '../model';
 import { methodNotAllowed, validateSchema } from '../../../middlewares';
 import { UserGroupModel } from '../../user-group/model';
 import { UsersFromGroup } from '../types';
-import { logger } from '../../../utils';
+import { tryCatch, trackExecutionTime } from '../../../utils';
 
 @injectable()
 export class GroupController implements RegistrableController {
     private readonly service: GroupService;
 
     constructor(@inject(TYPES.GroupService) service: GroupService) {
+        autoBind(this);
         this.service = service;
     }
 
@@ -36,98 +38,70 @@ export class GroupController implements RegistrableController {
             .all(methodNotAllowed);
     }
 
-    private get = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const nameSubstring = get(req, 'query.name');
-            const limit = get(req, 'query.limit');
+    @tryCatch
+    @trackExecutionTime
+    private async get(req: Request, res: Response): Promise<void> {
+        const nameSubstring = get(req, 'query.name');
+        const limit = get(req, 'query.limit');
+        const groups: GroupModel[] = await this.service.select(nameSubstring, limit);
 
-            const groups: GroupModel[] = await this.service.select(nameSubstring, limit);
+        res.json(groups);
+    }
 
-            res.json(groups);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+    @tryCatch
+    @trackExecutionTime
+    private async getById(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const group: GroupModel = await this.service.getById(id);
 
-    private getById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
+        res.json(group);
+    }
 
-            const group: GroupModel = await this.service.getById(id);
+    @tryCatch
+    @trackExecutionTime
+    private async create(req: Request, res: Response): Promise<void> {
+        const name = get(req, 'body.name');
+        const permissions = get(req, 'body.permissions');
+        const group: GroupModel = await this.service.create({ name, permissions });
 
-            res.json(group);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+        res.status(201).json(group);
+    }
 
-    private create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const name = get(req, 'body.name');
-            const permissions = get(req, 'body.permissions');
+    @tryCatch
+    @trackExecutionTime
+    private async update(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const permissions = get(req, 'body.permissions');
+        const group: GroupModel = await this.service.update(id, permissions);
 
-            const group: GroupModel = await this.service.create({ name, permissions });
+        res.json(group);
+    }
 
-            res.status(201).json(group);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+    @tryCatch
+    @trackExecutionTime
+    private async delete(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const group: GroupModel = await this.service.delete(id);
 
-    private update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
-            const permissions = get(req, 'body.permissions');
+        res.json(group);
+    }
 
-            const group: GroupModel = await this.service.update(id, permissions);
+    @tryCatch
+    @trackExecutionTime
+    private async getUsers(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const users: UsersFromGroup[] = await this.service.getUsers(id);
 
-            res.json(group);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+        res.json(users);
+    }
 
-    private delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
+    @tryCatch
+    @trackExecutionTime
+    private async addUsersToGroup(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const userIds = get(req, 'body.userIds', []);
+        const usersGroups: UserGroupModel[] = await this.service.addUsersToGroup(id, userIds);
 
-            const group: GroupModel = await this.service.delete(id);
-
-            res.json(group);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
-
-    private getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
-
-            const users: UsersFromGroup[] = await this.service.getUsers(id);
-
-            res.json(users);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
-
-    private addUsersToGroup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
-            const userIds = get(req, 'body.userIds', []);
-
-            const usersGroups: UserGroupModel[] = await this.service.addUsersToGroup(id, userIds);
-
-            res.status(201).json(usersGroups);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+        res.status(201).json(usersGroups);
+    }
 }

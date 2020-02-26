@@ -1,18 +1,20 @@
+import autoBind from 'auto-bind';
 import { injectable, inject } from 'inversify';
-import { Request, Response, NextFunction, Application } from 'express';
+import { Request, Response, Application } from 'express';
 import { get } from 'lodash';
 import { TYPES } from '../../../types';
 import { RegistrableController } from '../../../interfaces';
 import { UserService } from '../interfaces';
 import { UserModel, userValidation, userUpdateValidation } from '../model';
 import { methodNotAllowed, validateSchema } from '../../../middlewares';
-import { logger } from '../../../utils';
+import { trackExecutionTime, tryCatch } from '../../../utils';
 
 @injectable()
 export class UserController implements RegistrableController {
     private readonly service: UserService;
 
     constructor(@inject(TYPES.UserService) service: UserService) {
+        autoBind(this);
         this.service = service;
     }
 
@@ -29,73 +31,53 @@ export class UserController implements RegistrableController {
             .all(methodNotAllowed);
     }
 
-    private get = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const loginSubstring = get(req, 'query.login');
-            const limit = get(req, 'query.limit');
+    @tryCatch
+    @trackExecutionTime
+    private async get(req: Request, res: Response): Promise<void> {
+        const loginSubstring = get(req, 'query.login');
+        const limit = get(req, 'query.limit');
+        const users: UserModel[] = await this.service.select(loginSubstring, limit);
 
-            const users: UserModel[] = await this.service.select(loginSubstring, limit);
+        res.json(users);
+    }
 
-            res.json(users);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+    @tryCatch
+    @trackExecutionTime
+    private async getById(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const user: UserModel = await this.service.getById(id);
 
-    private getById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
+        res.json(user);
+    }
 
-            const user: UserModel = await this.service.getById(id);
+    @tryCatch
+    @trackExecutionTime
+    private async create(req: Request, res: Response): Promise<void> {
+        const login = get(req, 'body.login');
+        const password = get(req, 'body.password');
+        const age = get(req, 'body.age', null);
+        const user: UserModel = await this.service.create({ login, password, age });
 
-            res.json(user);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+        res.status(201).json(user);
+    }
 
-    private create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const login = get(req, 'body.login');
-            const password = get(req, 'body.password');
-            const age = get(req, 'body.age', null);
+    @tryCatch
+    @trackExecutionTime
+    private async update(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const password = get(req, 'body.password');
+        const age = get(req, 'body.age', null);
+        const user: UserModel = await this.service.update(id, { password, age });
 
-            const user: UserModel = await this.service.create({ login, password, age });
+        res.json(user);
+    }
 
-            res.status(201).json(user);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+    @tryCatch
+    @trackExecutionTime
+    private async delete(req: Request, res: Response): Promise<void> {
+        const id = get(req, 'params.id');
+        const user: UserModel = await this.service.delete(id);
 
-    private update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
-            const password = get(req, 'body.password');
-            const age = get(req, 'body.age', null);
-
-            const user: UserModel = await this.service.update(id, { password, age });
-
-            res.json(user);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
-
-    private delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const id = get(req, 'params.id');
-
-            const user: UserModel = await this.service.delete(id);
-
-            res.json(user);
-        } catch (e) {
-            logger.error(e);
-            return next(e);
-        }
-    };
+        res.json(user);
+    }
 }

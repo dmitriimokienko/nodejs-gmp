@@ -11,3 +11,13 @@
 2020-02-24T19:49:01.065Z [error]: Method is not allowed
 2020-02-24T19:50:44.518Z [error]: Method is not allowed
 2020-02-24T19:50:44.518Z [error]: Method is not allowed
+2020-02-26T13:38:31.093Z [error]: Invalid Request
+2020-02-26T13:38:31.093Z [error]: Invalid Request
+2020-02-26T13:40:26.186Z [error]: Invalid Request
+2020-02-26T13:44:41.026Z [error]: Invalid Request
+2020-02-26T13:44:53.415Z [error]: invalid input syntax for uuid: "1"
+2020-02-26T13:45:52.218Z [error]: invalid input syntax for uuid: "1"
+2020-02-26T13:48:26.533Z [error]: invalid input syntax for uuid: "1"
+2020-02-26T13:48:33.557Z [error]: Invalid Request
+2020-02-26T13:50:53.707Z [error]: getUsers(b889f6ee-f86e-464a-867d-75cbed50dc98) - Group not found
+2020-02-26T13:58:11.665Z [error]: "login" is required. "password" is required
