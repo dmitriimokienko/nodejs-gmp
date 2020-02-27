@@ -68,3 +68,6 @@
 2020-02-26T14:09:24.260Z [info]: Application running on http://localhost:8080
 2020-02-26T14:09:45.733Z [info]: Application running on http://localhost:8080
 2020-02-26T14:11:27.939Z [info]: Application running on http://localhost:8080
+2020-02-27T07:33:21.387Z [info]: Application running on http://localhost:8080
+2020-02-27T07:33:39.626Z [error]: getUsers(b889f6ee-f86e-464a-867d-75cbed50dc98) - Group not found
+2020-02-27T07:33:49.299Z [error]: Invalid Request
