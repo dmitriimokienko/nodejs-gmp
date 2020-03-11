@@ -6,7 +6,7 @@ import { get } from 'lodash';
 export const checkToken = (req: Request, _res: Response, next: NextFunction): void => {
     const token = get(req, 'cookies.token');
     if (!token) {
-        return next(Boom.unauthorized('Unauthorized'));
+        return next(Boom.unauthorized('Unauthorized user'));
     }
 
     try {
@@ -14,8 +14,10 @@ export const checkToken = (req: Request, _res: Response, next: NextFunction): vo
         jwt.verify(token, SECRET_KEY);
     } catch (e) {
         if (e instanceof jwt.JsonWebTokenError) {
-            return next(Boom.unauthorized('Unauthorized'));
+            return next(Boom.forbidden('Invalid token'));
         }
-        return next(Boom.badRequest('Authorization error'));
+        return next(Boom.badRequest(e));
     }
+
+    next();
 };
