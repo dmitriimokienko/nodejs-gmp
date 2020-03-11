@@ -19,20 +19,22 @@ export class GroupController implements RegistrableController {
     }
 
     public register(app: Application): void {
+        app.use(checkToken);
+
         app.route('/api/groups/:id/users')
-            .get(checkToken, this.getUsers)
-            .put(checkToken, this.addUsersToGroup)
+            .get(this.getUsers)
+            .put(this.addUsersToGroup)
             .all(methodNotAllowed);
 
         app.route('/api/groups/:id')
-            .get(checkToken, this.getById)
-            .put([validateSchema(groupUpdateValidation), checkToken], this.update)
-            .delete(checkToken, this.delete)
+            .get(this.getById)
+            .put(validateSchema(groupUpdateValidation), this.update)
+            .delete(this.delete)
             .all(methodNotAllowed);
 
         app.route('/api/groups')
-            .get(checkToken, this.get)
-            .post([validateSchema(groupValidation), checkToken], this.create)
+            .get(this.get)
+            .post(validateSchema(groupValidation), this.create)
             .all(methodNotAllowed);
     }
 

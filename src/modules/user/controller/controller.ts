@@ -17,15 +17,17 @@ export class UserController implements RegistrableController {
     }
 
     public register(app: Application): void {
+        app.use(checkToken);
+
         app.route('/api/users')
-            .get(checkToken, this.get)
-            .post([validateSchema(userValidation), checkToken], this.create)
+            .get(this.get)
+            .post(validateSchema(userValidation), this.create)
             .all(methodNotAllowed);
 
         app.route('/api/users/:id')
-            .get(checkToken, this.getById)
-            .put([validateSchema(userUpdateValidation), checkToken], this.update)
-            .delete(checkToken, this.delete)
+            .get(this.getById)
+            .put(validateSchema(userUpdateValidation), this.update)
+            .delete(this.delete)
             .all(methodNotAllowed);
     }
 
