@@ -5,7 +5,7 @@ import { TYPES } from '../../../types';
 import { RegistrableController } from '../../../interfaces';
 import { GroupService } from '../interfaces';
 import { GroupModel, groupUpdateValidation, groupValidation } from '../model';
-import { methodNotAllowed, validateSchema } from '../../../middlewares';
+import { checkToken, methodNotAllowed, validateSchema } from '../../../middlewares';
 import { UserGroupModel } from '../../user-group/model';
 import { UsersFromGroup } from '../types';
 import { tryCatch, trackExecutionTime } from '../../../utils';
@@ -20,19 +20,19 @@ export class GroupController implements RegistrableController {
 
     public register(app: Application): void {
         app.route('/api/groups/:id/users')
-            .get(this.getUsers)
-            .put(this.addUsersToGroup)
+            .get(checkToken, this.getUsers)
+            .put(checkToken, this.addUsersToGroup)
             .all(methodNotAllowed);
 
         app.route('/api/groups/:id')
-            .get(this.getById)
-            .put(validateSchema(groupUpdateValidation), this.update)
-            .delete(this.delete)
+            .get(checkToken, this.getById)
+            .put([validateSchema(groupUpdateValidation), checkToken], this.update)
+            .delete(checkToken, this.delete)
             .all(methodNotAllowed);
 
         app.route('/api/groups')
-            .get(this.get)
-            .post(validateSchema(groupValidation), this.create)
+            .get(checkToken, this.get)
+            .post([validateSchema(groupValidation), checkToken], this.create)
             .all(methodNotAllowed);
     }
 

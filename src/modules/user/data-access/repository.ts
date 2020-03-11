@@ -7,6 +7,12 @@ import { handleDaoError } from '../../../utils';
 
 @injectable()
 export class UserRepositoryImplDb implements UserRepository {
+    public login(login: string, password: string): Promise<UserModel> {
+        return UserModel.findOne({ where: { login, password } }).then(
+            handleDaoError(`login(${login}, password(${password}) - User not found`)
+        );
+    }
+
     public select(options: Record<string, unknown>): Promise<UserModel[]> {
         return UserModel.findAll(options);
     }

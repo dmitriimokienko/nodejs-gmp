@@ -29,3 +29,28 @@
 2020-02-26T13:59:33.178Z [error]: "password" with value "1" fails to match the required pattern: /(?=.*[A-Za-z])(?=.*\d)[0-9A-Za-z]{6,}/
 2020-02-27T07:33:39.626Z [error]: getUsers(b889f6ee-f86e-464a-867d-75cbed50dc98) - Group not found
 2020-02-27T07:33:49.299Z [error]: Invalid Request
+2020-03-11T09:03:07.056Z [error]: Invalid Request
+2020-03-11T09:03:12.592Z [error]: Invalid Request
+2020-03-11T09:03:27.687Z [error]: Invalid Request
+2020-03-11T09:03:35.525Z [error]: Invalid Request
+2020-03-11T09:03:50.701Z [error]: Invalid Request
+2020-03-11T09:05:06.755Z [error]: Invalid Request
+2020-03-11T09:06:18.472Z [error]: Invalid Request
+2020-03-11T09:06:55.383Z [error]: Invalid Request
+2020-03-11T09:13:20.480Z [error]: login(Dima, password(123456fdgdfDFGDFg141) - User not found
+2020-03-11T09:21:38.986Z [error]: "password" with value "1234" fails to match the required pattern: /(?=.*[A-Za-z])(?=.*\d)[0-9A-Za-z]{6,}/
+2020-03-11T11:04:58.866Z [error]: Method is not allowed
+2020-03-11T11:05:05.993Z [error]: "login" is required. "password" is required
+2020-03-11T11:05:17.996Z [error]: "login" is required. "password" is required
+2020-03-11T11:05:46.790Z [error]: "login" is required. "password" is required
+2020-03-11T11:10:22.283Z [error]: invalid input syntax for uuid: "1"
+2020-03-11T11:25:55.555Z [error]: Unauthorized
+2020-03-11T11:30:24.048Z [error]: Invalid Request
+2020-03-11T11:35:10.603Z [error]: Invalid Request
+2020-03-11T11:35:45.756Z [error]: Invalid Request
+2020-03-11T11:37:22.769Z [error]: Invalid Request
+2020-03-11T11:45:22.620Z [error]: Unauthorized
+2020-03-11T11:45:37.803Z [error]: Unauthorized
+2020-03-11T11:45:52.164Z [error]: Unauthorized
+2020-03-11T11:46:15.140Z [error]: Unauthorized
+2020-03-11T11:54:47.284Z [error]: Unauthorized

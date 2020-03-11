@@ -13,6 +13,10 @@ export class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    public login(login: string, password: string): Promise<UserModel> {
+        return this.userRepository.login(login, password);
+    }
+
     public select(loginSubstring?: string, limit?: string): Promise<UserModel[]> {
         const options = createSequelizeFindOptions({ login: loginSubstring }, limit);
         return this.userRepository.select(options);

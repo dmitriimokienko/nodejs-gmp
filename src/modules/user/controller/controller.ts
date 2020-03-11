@@ -5,7 +5,7 @@ import { TYPES } from '../../../types';
 import { RegistrableController } from '../../../interfaces';
 import { UserService } from '../interfaces';
 import { UserModel, userValidation, userUpdateValidation } from '../model';
-import { methodNotAllowed, validateSchema } from '../../../middlewares';
+import { methodNotAllowed, validateSchema, checkToken } from '../../../middlewares';
 import { trackExecutionTime, tryCatch } from '../../../utils';
 
 @injectable()
@@ -18,14 +18,14 @@ export class UserController implements RegistrableController {
 
     public register(app: Application): void {
         app.route('/api/users')
-            .get(this.get)
-            .post(validateSchema(userValidation), this.create)
+            .get(checkToken, this.get)
+            .post([validateSchema(userValidation), checkToken], this.create)
             .all(methodNotAllowed);
 
         app.route('/api/users/:id')
-            .get(this.getById)
-            .put(validateSchema(userUpdateValidation), this.update)
-            .delete(this.delete)
+            .get(checkToken, this.getById)
+            .put([validateSchema(userUpdateValidation), checkToken], this.update)
+            .delete(checkToken, this.delete)
             .all(methodNotAllowed);
     }
 
