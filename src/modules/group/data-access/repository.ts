@@ -79,7 +79,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
                     })
                 );
 
-                const usersGroups: UserGroupModel[] | undefined = await group.addUser(users, { transaction });
+                const usersGroups: UserGroupModel[] | null = await group.addUser(users, { transaction });
                 if (!usersGroups) {
                     throw Boom.conflict(ErrorMessages.addUsersToGroup.usersGroups(id, userIds, group));
                 }
