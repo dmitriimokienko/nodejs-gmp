@@ -3,7 +3,7 @@ import { Transaction } from 'sequelize';
 import Boom from '@hapi/boom';
 import { GroupDTO, GroupModel } from '../model';
 import { handleDaoError } from '../../../utils';
-import { Permission } from '../constants';
+import { Permission, ErrorMessages } from '../constants';
 import { GroupRepository } from '../interfaces';
 import { sequelize } from '../../../../resources';
 import { UserModel } from '../../user/model';
@@ -17,7 +17,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
     }
 
     public getById(id: string): Promise<GroupModel> {
-        return GroupModel.findByPk(id).then(handleDaoError(`getById(${id}) - Group not found`));
+        return GroupModel.findByPk(id).then(handleDaoError(ErrorMessages.getById(id)));
     }
 
     public async create(dto: GroupDTO): Promise<GroupModel> {
@@ -27,7 +27,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
         });
 
         if (!created) {
-            throw Boom.conflict(`create(${dto}) - This name already in use`);
+            throw Boom.conflict(ErrorMessages.create(dto));
         }
 
         return group;
@@ -35,7 +35,7 @@ export class GroupRepositoryImplDb implements GroupRepository {
 
     public update(id: string, permissions: Permission[]): Promise<GroupModel> {
         return GroupModel.findByPk(id)
-            .then(handleDaoError(`update(${id}, ${permissions}) - Group not found`))
+            .then(handleDaoError(ErrorMessages.update(id, permissions)))
             .then((instance: GroupModel) => {
                 instance.permissions = permissions || instance.permissions;
                 instance.save();
@@ -44,19 +44,16 @@ export class GroupRepositoryImplDb implements GroupRepository {
     }
 
     public delete(id: string): Promise<GroupModel> {
-        return GroupModel.destroy({ where: { id } }).then(handleDaoError(`delete(${id}) - Group not found`));
+        return GroupModel.destroy({ where: { id } }).then(handleDaoError(ErrorMessages.delete(id)));
     }
 
     public async getUsers(id: string): Promise<UsersFromGroup[]> {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
-
                 if (!group) {
-                    // prcess.env
-                    throw Boom.notFound(`getUsers(${id}) - Group not found`);
+                    throw Boom.notFound(ErrorMessages.getUsers(id));
                 }
-
                 return group.getUsers();
             });
         } catch (e) {
@@ -68,31 +65,24 @@ export class GroupRepositoryImplDb implements GroupRepository {
         try {
             return sequelize.transaction(async (transaction: Transaction) => {
                 const group: GroupModel | null = await GroupModel.findByPk(id, { transaction });
-
                 if (!group) {
-                    throw Boom.notFound(`addUsersToGroup(${id}, ${userIds}) - Group not found`);
+                    throw Boom.notFound(ErrorMessages.addUsersToGroup.group(id, userIds));
                 }
 
                 const users: UserModel[] = await Promise.all(
                     userIds.map(async (userId: string) => {
                         const user: UserModel | null = await UserModel.findByPk(userId, { transaction });
-
                         if (!user) {
-                            throw Boom.notFound(`addUsersToGroup(${id}, ${userIds}) - User not found`);
+                            throw Boom.notFound(ErrorMessages.addUsersToGroup.user(id, userIds));
                         }
-
                         return user;
                     })
                 );
 
                 const usersGroups: UserGroupModel[] | undefined = await group.addUser(users, { transaction });
-
                 if (!usersGroups) {
-                    throw Boom.conflict(
-                        `addUsersToGroup(${id}, ${userIds}) - ${group.name} already contains this user/users`
-                    );
+                    throw Boom.conflict(ErrorMessages.addUsersToGroup.usersGroups(id, userIds, group));
                 }
-
                 return usersGroups;
             });
         } catch (e) {

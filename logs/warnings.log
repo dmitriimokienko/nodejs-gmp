@@ -57,3 +57,10 @@
 2020-03-11T14:10:00.657Z [error]: Unauthorized
 2020-03-11T14:12:30.556Z [error]: Unauthorized
 2020-03-11T14:13:25.866Z [error]: Unauthorized
+2020-03-11T14:40:35.027Z [error]: Unauthorized user
+2020-03-11T14:41:04.415Z [error]: Invalid token
+2020-03-11T14:41:52.557Z [error]: Invalid token
+2020-03-11T14:42:09.938Z [error]: login(Dima, password(123456fdgdfDFGDFg141) - User not found
+2020-03-11T14:42:37.005Z [error]: Invalid Request
+2020-03-11T14:47:04.297Z [error]: Unauthorized user
+2020-03-11T14:47:27.130Z [error]: Unauthorized user
