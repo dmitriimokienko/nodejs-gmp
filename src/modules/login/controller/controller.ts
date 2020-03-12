@@ -17,7 +17,7 @@ export class LoginController implements RegistrableController {
     }
 
     public register(app: Application): void {
-        app.route('/api/login')
+        app.route('/api/auth/login')
             .post(validateSchema(userValidation), this.login)
             .all(methodNotAllowed);
     }
@@ -32,9 +32,8 @@ export class LoginController implements RegistrableController {
         const { SECRET_KEY, JWT_EXPIRES }: any = process.env;
         const expiresIn = toNumber(JWT_EXPIRES);
 
-        const token = jwt.sign({ id: user.id, login }, SECRET_KEY, { expiresIn });
+        const accessToken = jwt.sign({ id: user.id, login }, SECRET_KEY, { expiresIn });
 
-        res.cookie('token', token, { maxAge: expiresIn * 1000 });
-        res.end();
+        res.json({ accessToken });
     };
 }

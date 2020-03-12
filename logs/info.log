@@ -156,3 +156,19 @@
 2020-03-12T07:29:30.432Z [info]: Application running on http://localhost:8080
 2020-03-12T07:29:53.682Z [info]: Application running on http://localhost:8080
 2020-03-12T07:30:24.304Z [info]: Application running on http://localhost:8080
+2020-03-12T19:00:53.142Z [info]: Application running on http://localhost:8080
+2020-03-12T19:03:23.664Z [error]: login(Dima, password(123456fdgdfDFGDFg141) - User not found
+2020-03-12T19:04:52.047Z [error]: Unauthorized user
+2020-03-12T19:06:45.563Z [info]: Application running on http://localhost:8080
+2020-03-12T19:10:11.042Z [info]: Application running on http://localhost:8080
+2020-03-12T19:11:24.097Z [info]: Application running on http://localhost:8080
+2020-03-12T19:16:52.315Z [info]: Application running on http://localhost:8080
+2020-03-12T19:17:31.671Z [error]: Invalid token
+2020-03-12T19:19:06.335Z [error]: Invalid token
+2020-03-12T19:19:14.102Z [error]: Invalid token
+2020-03-12T19:19:55.320Z [error]: Invalid token
+2020-03-12T19:20:05.094Z [error]: Unauthorized user
+2020-03-12T19:20:18.870Z [error]: Invalid token
+2020-03-12T19:20:46.333Z [error]: Unauthorized user
+2020-03-12T19:24:44.341Z [info]: Application running on http://localhost:8080
+2020-03-12T19:25:43.838Z [info]: Application running on http://localhost:8080

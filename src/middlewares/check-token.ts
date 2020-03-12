@@ -1,10 +1,9 @@
 import Boom from '@hapi/boom';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { get } from 'lodash';
 
 export const checkToken = (req: Request, _res: Response, next: NextFunction): void => {
-    const token = get(req, 'cookies.token');
+    const { token } = req;
     if (!token) {
         return next(Boom.unauthorized('Unauthorized user'));
     }
