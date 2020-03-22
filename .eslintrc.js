@@ -10,7 +10,9 @@ module.exports = {
         sourceType: 'module',  // Allows for the use of imports
     },
     env: {
-        es6: true
+        node: true,
+        es6: true,
+        jest: true
     },
     globals: {
         "process": "readonly",

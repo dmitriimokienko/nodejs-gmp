@@ -23,7 +23,11 @@
       "scripthost",
       "es2015.promise"
     ],
-    "types": ["reflect-metadata"],
+    "types": [
+      "node",
+      "reflect-metadata",
+      "jest"
+    ],
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
