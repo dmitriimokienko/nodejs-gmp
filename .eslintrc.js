@@ -30,7 +30,7 @@ module.exports = {
         ],
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/explicit-function-return-type": 0,
-        "@typescript-eslint/ban-ts-ignore": 1,
+        "@typescript-eslint/ban-ts-ignore": 0,
         "no-constant-condition": 2,
         "no-control-regex": 2,
         "no-dupe-args": 2,

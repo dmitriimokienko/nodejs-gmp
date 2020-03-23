@@ -76,8 +76,8 @@ export class UserController implements RegistrableController {
     @trackExecutionTime()
     private delete = async (req: Request, res: Response): Promise<void> => {
         const id = get(req, 'params.id');
-        const user: UserModel = await this.service.delete(id);
+        await this.service.delete(id);
 
-        res.json(user);
+        res.status(204);
     };
 }
