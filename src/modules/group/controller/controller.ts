@@ -81,9 +81,9 @@ export class GroupController implements RegistrableController {
     @trackExecutionTime()
     private delete = async (req: Request, res: Response): Promise<void> => {
         const id = get(req, 'params.id');
-        const group: GroupModel = await this.service.delete(id);
+        await this.service.delete(id);
 
-        res.json(group);
+        res.status(204);
     };
 
     @tryCatch()

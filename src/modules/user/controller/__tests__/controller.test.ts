@@ -1,7 +1,6 @@
 // import express, { Application, Request, Response } from 'express';
 // import request from 'supertest';
 import httpMocks from 'node-mocks-http';
-import { noop } from 'lodash';
 import { app } from '../../../../server';
 import { UserController } from '../controller';
 import { UserService } from '../../interfaces';
@@ -34,7 +33,7 @@ jest.mock('../../../../middlewares/check-token', () => ({
 describe('Test UserController', () => {
     let req: any = null;
     let res: any = null;
-    const next = noop;
+    const next = jest.fn();
 
     const Service: any = jest.fn(() => ({
         select: jest.fn().mockResolvedValue(mockUsers),
