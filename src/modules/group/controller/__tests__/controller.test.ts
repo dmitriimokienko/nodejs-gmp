@@ -66,7 +66,10 @@ describe('Test GroupController', () => {
             });
         }),
         delete: jest.fn(groupId => Promise.resolve(mockGroups.find(({ id }) => groupId === id))),
-        getUsers: jest.fn().mockResolvedValue(mockUsers)
+        getUsers: jest.fn().mockResolvedValue(mockUsers),
+        addUsersToGroup: jest.fn((groupId, [userId]) =>
+            Promise.resolve({ id: 'e887f65e-f46e-464a-867d-75cbed50d484', groupId, userId })
+        )
     }));
 
     const service: GroupService = new Service();
@@ -146,5 +149,20 @@ describe('Test GroupController', () => {
 
         expect(res._getJSONData()).toEqual(mockUsers);
         expect(res.statusCode).toBe(200);
+    });
+
+    it('should return correct result by "addUsersToGroup" method', async () => {
+        expect.assertions(2);
+
+        const id = 'e887f65e-f46e-464a-867d-75cbed50d484';
+        const groupId = mockGroup2.id;
+        const userId = mockUser1.id;
+
+        req = { params: { id: groupId }, body: { userIds: [userId] } };
+        // @ts-ignore
+        await controller.addUsersToGroup(req, res, next);
+
+        expect(res._getJSONData()).toEqual({ id, groupId, userId });
+        expect(res.statusCode).toBe(201);
     });
 });
